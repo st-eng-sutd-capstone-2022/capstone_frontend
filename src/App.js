@@ -51,11 +51,11 @@ const App = () => {
   )
   return(
     <Router>
-      <ResponsiveAppBar>
-        <main>
-          {routes}
-        </main>
-      </ResponsiveAppBar>
+      <ResponsiveAppBar/>
+      <main>
+        {routes}
+      </main>
+    
     </Router>
   );
 
