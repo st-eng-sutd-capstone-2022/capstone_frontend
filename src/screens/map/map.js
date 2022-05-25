@@ -1,8 +1,14 @@
 import React from "react";
 import GoogleMapReact from "google-map-react";
 
-import './map.css';
+import './Map.css';
 
-const map = () => {}
+const Map = () => {
+    return(
+        <h1>
+            map
+        </h1>
+    );
+}
 
-export default map;
+export default Map;

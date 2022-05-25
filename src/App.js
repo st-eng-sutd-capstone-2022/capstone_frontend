@@ -5,6 +5,7 @@ import './App.css';
 import { useAuth } from './common/hooks/auth-hook';
 import Login from './screens/auth/Login';
 import Profile from './screens/profile/Profile';
+import Map from './screens/map/Map';
 import ResponsiveAppBar from './common/components/ResponsiveAppBar';
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
     <Routes>
       <Route path="/login" element={<Login/>}/>
       <Route path="/profile" element={<Profile/>}/>
+      <Route path="/map" element={<Map/>}/>
       <Route path="*" element={<Navigate to ="/" />}/>
     </Routes>
   )
