@@ -47,7 +47,8 @@ const App = () => {
     <Routes>
       <Route path="/login" element={<Login/>}/>
       <Route path="/profile" element={<Profile/>}/>
-      <Route path="/map" element={<Map/>}/>
+      <Route path="/liveview" element={<Map/>}/>
+      <Route path="/" element={<Login/>}/>
       <Route path="*" element={<Navigate to ="/" />}/>
     </Routes>
   )
