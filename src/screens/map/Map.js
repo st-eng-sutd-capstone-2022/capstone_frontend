@@ -1,4 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import GoogleMapReact from "google-map-react";
 import Markers from "./components/Markers";
 
@@ -7,12 +13,28 @@ const boatObj = {
     status: "active",
     battery: "100",
     weight:"10",
-    lat:"1.404701",
-    lng:"103.838530",
+    lat:1.404701,
+    lng:103.838530,
 }
 
+const locationData = [
+    {location:"Seletar",
+    lat:1.4123541,
+    lng:103.8416441},
+    {location:"Bedok Reservoir",
+    lat:1.3425956,
+    lng:103.9220676},
+]
+
 const Map = () => {
-    console.log(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+
+    const [location, setLocation] = useState({location:"Seletar",lat:1.4123541,lng:103.8416441});
+    console.log(location.location);
+
+    const handleChange = (event) => {
+        setLocation(event.target.value);
+    };
+   
     const lineSymbol = {
         path: "M 0,-1 0,1",
         strokeOpacity: 1,
@@ -67,42 +89,79 @@ const Map = () => {
         flightPath2.setMap(google.map);
         flightPath3.setMap(google.map);
     }   
-   
+
+    
     return(
-        <GoogleMapReact
-            style={{}}
-            bootstrapURLKeys={{
-                key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-                libraries: [
-                    "places",
-                    "geometry",
-                    "drawing",
-                    "visualization",
-                ],
-            }}
-            defaultCenter={{ lat: 1.4123541, lng: 103.8416441 }}
-            defaultZoom={15}
-           
-            hoverDistance={70}
-            options={{
-                clickableIcons: false,
-                fullscreenControl: false,
-                zoomControl: false,
-                gestureHandling: "greedy",
-                minZoom: 11
-            }}
-            yesIWantToUseGoogleMapApiInternals
-            onGoogleApiLoaded={handleGoogleMapApi}
-           
-        >
-            <Markers
-                key = {boatObj.id}
-                boatObj={boatObj}
-                lat={boatObj.lat}
-                lng={boatObj.lng}
-            />
-           
-        </GoogleMapReact>
+        <React.Fragment>
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={4} style={{zIndex:1600}}>
+                    <FormControl sx={{ ml: 5, mt:3, minWidth: 300, backgroundColor:"#fff" }}>
+                        <InputLabel id="location-label">Location</InputLabel>
+                        <Select
+                        labelId="location-label"
+                        id="location-select"
+                        defaultValue=""
+                        value={location.location}
+                        label="Location"
+                        onChange={handleChange}
+                        >   
+                            {locationData.map((data, index) => {
+                                return <MenuItem key={index} value={data}>{data.location}</MenuItem>
+                            })}
+                            
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={12} md={8} style={{zIndex:1600, marginTop:50}}>
+                    <Grid container spacing={2} style={{paddingLeft:10,paddingRight:10}}>
+                        <Grid item xs={4} md={3}>
+                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
+                        </Grid>
+                        <Grid item xs={4} md={3}>
+                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Yellow Idle </span>
+                        </Grid>
+                        <Grid item xs={4} md={3}>
+                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Red Idle </span>
+                        </Grid>
+                    </Grid>  
+                  
+                </Grid>
+            </Grid>
+            <GoogleMapReact
+                style={{}}
+                bootstrapURLKeys={{
+                    key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+                    libraries: [
+                        "places",
+                        "geometry",
+                        "drawing",
+                        "visualization",
+                    ],
+                }}
+                defaultCenter={{lat:1.4123541, lng:103.8416441}}
+                defaultZoom={15}
+                center={{lat:location.lat, lng:location.lng}}
+                hoverDistance={70}
+                options={{
+                    clickableIcons: false,
+                    fullscreenControl: false,
+                    zoomControl: false,
+                    gestureHandling: "greedy",
+                    minZoom: 11
+                }}
+                yesIWantToUseGoogleMapApiInternals
+                onGoogleApiLoaded={handleGoogleMapApi}
+            
+            >
+                <Markers
+                    key = {boatObj.id}
+                    boatObj={boatObj}
+                    lat={boatObj.lat}
+                    lng={boatObj.lng}
+                />
+            
+            </GoogleMapReact>
+        </React.Fragment>
     );
 }
 
