@@ -7,6 +7,7 @@ import Login from './screens/auth/Login';
 import Profile from './screens/profile/Profile';
 import Map from './screens/map/Map';
 import ResponsiveAppBar from './common/components/ResponsiveAppBar';
+import Assign from './screens/assign/Assign';
 
 const App = () => {
   // const {token, login, logout, userId} = useAuth()
@@ -48,6 +49,7 @@ const App = () => {
       <Route path="/login" element={<Login/>}/>
       <Route path="/profile" element={<Profile/>}/>
       <Route path="/liveview" element={<Map/>}/>
+      <Route path="assign" element={<Assign/>}/>
       <Route path="/" element={<Login/>}/>
       <Route path="*" element={<Navigate to ="/" />}/>
     </Routes>
