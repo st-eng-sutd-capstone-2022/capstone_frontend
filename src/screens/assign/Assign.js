@@ -9,6 +9,9 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+//https://mui.com/x/react-data-grid/editing/
+
+import Assigned from './Assigned';
 
 const Assign = () => {
     // 0 = assigned, 1 = assigned
@@ -89,7 +92,7 @@ const Assign = () => {
 
             </Container>
             :
-            <h1>assigned</h1>
+            <Assigned />
             }
         </React.Fragment>
     )
