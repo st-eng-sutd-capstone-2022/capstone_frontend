@@ -49,6 +49,10 @@ function EditToolbar(props) {
     event.preventDefault();
   };
 
+  const handleAdd = () => {
+      console.log('add');
+  }
+
   return (
     <Box
       sx={{
@@ -58,6 +62,15 @@ function EditToolbar(props) {
       }}
     >
       <Button
+        onClick={handleAdd}
+        onMouseDown={handleMouseDown}
+        color="primary"
+        variant="outlined"
+        sx={{ mr: 1 }}
+        >
+        Add
+      </Button>
+      <Button
         onClick={handleSaveOrEdit}
         onMouseDown={handleMouseDown}
         disabled={!selectedCellParams}
@@ -66,6 +79,7 @@ function EditToolbar(props) {
       >
         {cellMode === 'edit' ? 'Save' : 'Edit'}
       </Button>
+      
       <Button
         onClick={handleCancel}
         onMouseDown={handleMouseDown}
@@ -120,7 +134,7 @@ export default function StartEditButtonGrid() {
   );
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 600, width: '100%' }}>
       <DataGrid
         rows={rows}
         columns={columns}
@@ -148,58 +162,47 @@ export default function StartEditButtonGrid() {
 }
 
 const columns = [
-  { field: 'name', headerName: 'Name', width: 180, editable: true },
-  { field: 'age', headerName: 'Age', type: 'number', editable: true },
+  { field: 'boatId', headerName: 'Boat ID', width: 60, editable: true },
+  { field: 'location', headerName: 'Location', width: 140,editable: true },
   {
-    field: 'dateCreated',
-    headerName: 'Date Created',
-    type: 'date',
-    width: 180,
+    field: 'serial',
+    headerName: 'Serial Number',
+    width: 120,
     editable: true,
   },
   {
-    field: 'lastLogin',
-    headerName: 'Last Login',
-    type: 'dateTime',
-    width: 220,
-    editable: true,
+    field: 'assigner',
+    headerName: 'Assigner',
+    width: 80,
   },
+  {
+    field: 'delete',
+    headerName: 'Delete',
+    renderCell: (params) => (
+      <strong>
+        {/* {params.id} */}
+        <Button
+          variant="contained"
+          color="primary"
+          size="small"
+          style={{ marginLeft: 16 }}
+        >
+          Delete
+        </Button>
+      </strong>
+    ),
+    width: 100,
+  },
+
 ];
 
 const rows = [
   {
     id: 1,
-    name: randomTraderName(),
-    age: 25,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
+    boatId: '001',
+    location: 'lower seletar reservoir',
+    serial: '12412124',
+    assigner: 'sam',
   },
-  {
-    id: 2,
-    name: randomTraderName(),
-    age: 36,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 3,
-    name: randomTraderName(),
-    age: 19,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 4,
-    name: randomTraderName(),
-    age: 28,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
-  {
-    id: 5,
-    name: randomTraderName(),
-    age: 23,
-    dateCreated: randomCreatedDate(),
-    lastLogin: randomUpdatedDate(),
-  },
+  
 ];
