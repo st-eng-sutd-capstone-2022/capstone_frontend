@@ -5,9 +5,10 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
 import GoogleMapReact from "google-map-react";
 import Markers from "./components/Markers";
+
+import './Map.css';
 
 const boatObj = {
     id : "100100",
@@ -113,16 +114,16 @@ const Map = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} md={8} style={{zIndex:1600, marginTop:50}}>
+                <Grid item xs={12} md={8} id="indicator_grid">
                     <Grid container spacing={2} style={{paddingLeft:10,paddingRight:10}}>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Yellow Idle </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Inactive </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Red Idle </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Moving </span>
                         </Grid>
                     </Grid>  
                   

@@ -1,1 +1,17 @@
+#indicator_grid{
+    z-index: 1600;
+    margin-top: 50px;
+}
 
+.spanBg{
+    background-color: #fff;
+    display: block;
+    padding: 5px;
+    text-align: center;
+}
+
+@media (max-width: 480px) {
+    #indicator_grid{
+        margin-top: 0!important;
+    }
+}
