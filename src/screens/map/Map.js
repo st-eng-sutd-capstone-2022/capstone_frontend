@@ -5,9 +5,12 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
 import GoogleMapReact from "google-map-react";
 import Markers from "./components/Markers";
+import Button from '@mui/material/Button';
+
+import './Map.css';
+import ListView from "./ListView";
 
 const boatObj = {
     id : "100100",
@@ -30,11 +33,15 @@ const locationData = [
 const Map = () => {
 
     const [location, setLocation] = useState({location:"Seletar",lat:1.4123541,lng:103.8416441});
-    console.log(location.location);
+    const [mapView, setMapView] = useState(true);
 
     const handleChange = (event) => {
         setLocation(event.target.value);
     };
+
+    const handleView = () => {
+        setMapView(!mapView);
+    }
    
     const lineSymbol = {
         path: "M 0,-1 0,1",
@@ -95,8 +102,8 @@ const Map = () => {
     return(
         <React.Fragment>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={4} style={{zIndex:1600}}>
-                    <FormControl sx={{ ml: 5, mt:3, minWidth: 300, backgroundColor:"#fff" }}>
+                <Grid item xs={8} md={3} style={{zIndex:1700}}>
+                    <FormControl sx={{ ml: 5, mt:3, minWidth: 200, backgroundColor:"#fff" }}>
                         <InputLabel id="location-label">Location</InputLabel>
                         <Select
                         labelId="location-label"
@@ -105,6 +112,9 @@ const Map = () => {
                         value={location.location}
                         label="Location"
                         onChange={handleChange}
+                        MenuProps={{
+                            style: {zIndex: 1700}
+                        }}
                         >   
                             {locationData.map((data, index) => {
                                 return <MenuItem key={index} value={data}>{data.location}</MenuItem>
@@ -113,21 +123,27 @@ const Map = () => {
                         </Select>
                     </FormControl>
                 </Grid>
-                <Grid item xs={12} md={8} style={{zIndex:1600, marginTop:50}}>
+                <Grid item xs={3} md={2} className="grid_margin" style={{zIndex:1400,marginTop:15,marginRight:5}}>
+                    <Button variant="contained" onClick={handleView}>
+                        {mapView ? "List View" : "Map View"}
+                    </Button>
+                </Grid>
+                <Grid item xs={12} md={6} className="grid_margin">
                     <Grid container spacing={2} style={{paddingLeft:10,paddingRight:10}}>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Yellow Idle </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Inactive </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span style={{backgroundColor:"#fff",padding:10,display:"block",textAlign:"center"}}><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Red Idle </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Moving </span>
                         </Grid>
                     </Grid>  
                   
                 </Grid>
             </Grid>
+            {mapView ?
             <GoogleMapReact
                 style={{}}
                 bootstrapURLKeys={{
@@ -161,7 +177,9 @@ const Map = () => {
                     lng={boatObj.lng}
                 />
             
-            </GoogleMapReact>
+            </GoogleMapReact> : 
+            <ListView/>
+            }
         </React.Fragment>
     );
 }
