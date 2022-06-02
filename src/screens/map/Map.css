@@ -1,6 +1,6 @@
-#indicator_grid{
+.grid_margin{
     z-index: 1600;
-    margin-top: 50px;
+    margin-top: 50px!important;
 }
 
 .spanBg{
@@ -11,7 +11,7 @@
 }
 
 @media (max-width: 480px) {
-    #indicator_grid{
-        margin-top: 0!important;
+    .grid_margin{
+        margin-top: 10px!important;
     }
 }
