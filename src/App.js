@@ -9,6 +9,9 @@ import Map from './screens/map/Map';
 import ResponsiveAppBar from './common/components/ResponsiveAppBar';
 import Assign from './screens/assign/Assign';
 import Activity from './screens/activity/Activity';
+import CreateAccount from './screens/profile/CreateAccount';
+import AppInstructions from './screens/profile/AppInstructions';
+import ChangePassword from './screens/profile/ChangePassword';
 
 const App = () => {
   // const {token, login, logout, userId} = useAuth()
@@ -49,6 +52,9 @@ const App = () => {
     <Routes>
       <Route path="/login" element={<Login/>}/>
       <Route path="/profile" element={<Profile/>}/>
+      <Route path="/profile/change-password" element={<ChangePassword/>}/>
+      <Route path='/profile/create-account' element={<CreateAccount/>}/>
+      <Route path='/profile/instruction' element={<AppInstructions/>}/>
       <Route path="/liveview" element={<Map/>}/>
       <Route path="assign" element={<Assign/>}/>
       <Route path="activitylog" element={<Activity/>}/>
