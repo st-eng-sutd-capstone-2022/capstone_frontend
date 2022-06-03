@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
+import boatLogo from '../../assets/images/boat_logo.png';
+
 const pages = ['live view', 'activity log', 'assign', 'profile'];
 
 const ResponsiveAppBar = () => {
@@ -32,8 +34,9 @@ const ResponsiveAppBar = () => {
     <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-          <Typography
+          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
+          <Avatar src={boatLogo} sx={{ display: { xs: 'none', md: 'flex' }, mr: 1,cursor:'pointer' }} onClick={()=>{navigate('/')}} />
+          {/* <Typography
             variant="h6"
             noWrap
             component="a"
@@ -49,7 +52,7 @@ const ResponsiveAppBar = () => {
             }}
           >
             LOGO
-          </Typography>
+          </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -88,8 +91,9 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-          <Typography
+          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
+          <Avatar src={boatLogo} sx={{ display: { xs: 'flex', md: 'none' }, mr: 1,cursor:'pointer' }} onClick={()=>{navigate('/')}} />
+          {/* <Typography
             variant="h5"
             noWrap
             component="a"
@@ -106,7 +110,7 @@ const ResponsiveAppBar = () => {
             }}
           >
             LOGO
-          </Typography>
+          </Typography> */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
               <Button
