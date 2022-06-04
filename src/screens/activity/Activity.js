@@ -9,6 +9,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Drawer from '@mui/material/Drawer';
 
 import Timeseries from "./Timeseries";
 import Log from "./Log";
@@ -24,11 +25,14 @@ const Activity = () => {
 
     return(
         <React.Fragment>
-            <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+            
+            <Box sx={{ bgcolor: 'background.paper' }}>
+            
                 <Tabs variant="fullWidth" value={tab} onChange={handleChange} centered>
                     <Tab label="Timeseries" />
                     <Tab label="Activity Log" />
                 </Tabs>
+                
             </Box>
             {tab === 0? 
             <Timeseries/>

@@ -56,7 +56,7 @@ const Timeseries = () => {
 
     return (
         <React.Fragment>
-            <Box sx={{ flexGrow: 1,mt:3,mx:3 }}>
+            <Box sx={{margin:"10px"}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={4}>
                         <LineChart

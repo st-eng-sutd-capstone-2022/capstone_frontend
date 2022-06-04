@@ -12,6 +12,7 @@ import Activity from './screens/activity/Activity';
 import CreateAccount from './screens/profile/CreateAccount';
 import AppInstructions from './screens/profile/AppInstructions';
 import ChangePassword from './screens/profile/ChangePassword';
+import ActivityWrapperWithDrawer from './screens/activity/ActivityWrapperWithDrawer';
 
 const App = () => {
   // const {token, login, logout, userId} = useAuth()
@@ -58,6 +59,7 @@ const App = () => {
       <Route path="/liveview" element={<Map/>}/>
       <Route path="assign" element={<Assign/>}/>
       <Route path="activitylog" element={<Activity/>}/>
+      <Route path="/example" element={<ActivityWrapperWithDrawer/>}/>
       <Route path="/" element={<Login/>}/>
       <Route path="*" element={<Navigate to ="/" />}/>
     </Routes>
