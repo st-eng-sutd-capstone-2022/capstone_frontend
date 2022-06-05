@@ -7,14 +7,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+
 import { useNavigate } from 'react-router-dom';
+import {AuthContext} from '../../common/context/auth-context';
 
 const Profile = () => {
     const navigate = useNavigate();
-
-    const handleLogout = () =>{
-        console.log("log out");
-    }
+    const auth = React.useContext(AuthContext);
 
     return(
         <Box sx={{margin:"20px" }}>
@@ -55,7 +54,7 @@ const Profile = () => {
             </Card>
             <br/>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
-                <CardActionArea onClick={handleLogout}>
+                <CardActionArea onClick={auth.logout}>
                     <CardContent style={{textAlign:"center"}}>
                     <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}}>
                         Log Out

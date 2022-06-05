@@ -5,19 +5,16 @@ let logoutTimer;
 export const useAuth = () => {
   const [token, setToken] = useState();
   const [tokenExpirationTime, setTokenExpirationTime] = useState();
-  const [userId, setUserId] = useState(false);
 
-  const login = useCallback((uid,token, expirationDate)=>{
+  const login = useCallback((token, expirationDate)=>{
     setToken(token);
-    setUserId(uid);
     const tokenExpirationDate = expirationDate||new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365);
     setTokenExpirationTime(tokenExpirationDate);
-    localStorage.setItem("userData",JSON.stringify({userId:uid, token:token, expiration:tokenExpirationDate.toISOString()}));
+    localStorage.setItem("userData",JSON.stringify({token:token, expiration:tokenExpirationDate.toISOString()}));
   },[]);
 
   const logout = useCallback(()=>{
     setToken(null);
-    setUserId(null);
     setTokenExpirationTime(null);
     localStorage.removeItem("userData");
   },[]);
@@ -37,9 +34,9 @@ export const useAuth = () => {
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem('userData'));
     if(storedData && storedData.token && new Date(storedData.expiration) > new Date()){
-      login(storedData.userId, storedData.token, new Date(storedData.expiration));
+      login(storedData.token, new Date(storedData.expiration));
     }
   },[login]);
 
-  return {token, login, logout, userId}
+  return {token, login, logout}
 };

@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route,Routes, Navigate } from 'react-router-do
 
 import './App.css';
 import { useAuth } from './common/hooks/auth-hook';
+import { AuthContext } from './common/context/auth-context';
 import Login from './screens/auth/Login';
 import Profile from './screens/profile/Profile';
 import Map from './screens/map/Map';
@@ -15,64 +16,42 @@ import ChangePassword from './screens/profile/ChangePassword';
 import ActivityWrapperWithDrawer from './screens/activity/ActivityWrapperWithDrawer';
 
 const App = () => {
-  // const {token, login, logout, userId} = useAuth()
+  const {token, login, logout} = useAuth()
 
   let routes;
-  // if(token){
-  //   routes = (
-  //     <Switch>
-  //       <Route path="/" exact>
-  //         {/* home route */}
-  //       </Route>
-  //       <Route path="/about" exact>
-  //         <About/>
-  //       </Route>
-  //     </Switch>
-  //   )
-  // } else {
-  //   routes = (
-  //     <Switch>
-  //       <Route path="/login" exact>
-  //         <Login/>
-  //       </Route>
-  //       <Redirect to="/login"/>
-  //     </Switch>
-  //   )
-  // }
-  // return(
-  //   <AuthContext.Provider value={{isLoggedIn: !!token, token:token, userId:userId, login:login, logout:logout}}>
-  //     <Router>
-  //       <MyNav/>
-  //       <main>
-  //         {routes}
-  //       </main>
-  //     </Router>
-  //   </AuthContext.Provider>
-  // );
-  routes = (
-    <Routes>
-      <Route path="/login" element={<Login/>}/>
-      <Route path="/profile" element={<Profile/>}/>
-      <Route path="/profile/change-password" element={<ChangePassword/>}/>
-      <Route path='/profile/create-account' element={<CreateAccount/>}/>
-      <Route path='/profile/instruction' element={<AppInstructions/>}/>
-      <Route path="/liveview" element={<Map/>}/>
-      <Route path="assign" element={<Assign/>}/>
-      <Route path="activitylog" element={<Activity/>}/>
-      <Route path="/example" element={<ActivityWrapperWithDrawer/>}/>
-      <Route path="/" element={<Login/>}/>
-      <Route path="*" element={<Navigate to ="/" />}/>
-    </Routes>
-  )
+  if(token){
+    routes = (
+      <Routes>
+        <Route path="/profile" element={<Profile/>}/>
+        <Route path="/profile/change-password" element={<ChangePassword/>}/>
+        <Route path='/profile/create-account' element={<CreateAccount/>}/>
+        <Route path='/profile/instruction' element={<AppInstructions/>}/>
+        <Route path="/liveview" element={<Map/>}/>
+        <Route path="assign" element={<Assign/>}/>
+        <Route path="activitylog" element={<Activity/>}/>
+        <Route path="/example" element={<ActivityWrapperWithDrawer/>}/>
+        <Route path="*" element={<Navigate to ="/liveview" />}/>
+      </Routes>
+    )
+  } else {
+    routes = (
+      <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="*" element={<Navigate to ="/login" />}/>
+      </Routes>
+    )
+  }
   return(
-    <Router>
-      <ResponsiveAppBar/>
-      <main>
-        {routes}
-      </main>
-    
-    </Router>
+    <AuthContext.Provider value={{isLoggedIn: !!token, token:token, login:login, logout:logout}}>
+      <Router>
+        <ResponsiveAppBar/>
+        <main>
+          {routes}
+        </main>
+      </Router>
+    </AuthContext.Provider>
   );
+
 
 }
 

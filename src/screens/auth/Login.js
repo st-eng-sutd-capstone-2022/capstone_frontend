@@ -1,5 +1,4 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
+import React,{useContext} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,11 +7,14 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import boatLogo from '../../assets/images/boat_logo.png';
+import { useNavigate } from 'react-router-dom';
+
+import {AuthContext} from '../../common/context/auth-context';
+import apiClient from "../../common/hooks/http-hook";
 
 function Copyright(props) {
   return (
@@ -29,14 +31,27 @@ function Copyright(props) {
 
 const theme = createTheme();
 
+
 export default function Login() {
-  const handleSubmit = (event) => {
+  const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleSubmit = async event => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    try {
+      const response = await apiClient.post('/auth/login', {
+        email: data.get('email'),
+        password: data.get('password'),
+      });
+      console.log(response);
+      auth.login(response.data.access_token);
+      navigate('/liveview');
+    }
+    catch (err) {
+      console.log(err);
+    }
+    
   };
 
   return (
