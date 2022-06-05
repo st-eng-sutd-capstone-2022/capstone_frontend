@@ -80,7 +80,7 @@ export const ActivityWrapperWithDrawer = () => {
                   </Select>
               </FormControl>
               <FormControl fullWidth sx={{mt:2}}>
-                <InputLabel id="typeLabel">Search Type</InputLabel>
+                <InputLabel id="typeLabel">Type</InputLabel>
                     <Select
                         labelId="type"
                         id="tpye"
@@ -96,7 +96,7 @@ export const ActivityWrapperWithDrawer = () => {
               </FormControl>
               {type === 'zone'&&
               <FormControl fullWidth sx={{mt:2}}>
-                <InputLabel id="zoneLabel">Search Zone</InputLabel>
+                <InputLabel id="zoneLabel">Zone</InputLabel>
                     <Select
                         labelId="zone"
                         id="zone"
