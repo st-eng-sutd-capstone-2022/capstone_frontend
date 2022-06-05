@@ -31,12 +31,23 @@ const BarChart = (props) => {
         responsive: true,
         plugins: {
           legend: {
-            position: 'top',
+            display:false
           },
         },
     };
 
-    const data = props.data;
+    const labels = props.networkData.labels;
+
+    const data = {
+        labels,
+        datasets:[
+            {
+                data: props.networkData.datasets,
+                backgroundColor:'rgb(24,118,209)',
+            },
+           
+        ]
+    };
 
     return(
         <Box sx={{minWidth:200}}>

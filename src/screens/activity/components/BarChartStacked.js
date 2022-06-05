@@ -28,12 +28,7 @@ ChartJS.register(
 const BarChartStacked = (props) => {
 
     const options = {
-        plugins: {
-          title: {
-            display: true,
-            text: 'Chart.js Bar Chart - Stacked',
-          },
-        },
+        
         responsive: true,
         scales: {
           x: {
@@ -45,7 +40,28 @@ const BarChartStacked = (props) => {
         },
     };
 
-    const data = props.data;
+    const labels = props.networkData.labels;
+
+    const data = {
+      labels,
+      datasets:[
+          {
+              label: props.networkData.datasets[0].label,
+              data: [4,6,6,5,6,6,5,6,7,8],
+              backgroundColor:'rgba(185, 20, 20, 1)',
+          },
+          {
+              label: props.networkData.datasets[1].label,
+              data: [2,1,1,2,1,1,2,2,1,0],
+              backgroundColor:'rgba(237, 239, 124, 1)',
+          },
+          {
+              label: props.networkData.datasets[2].label,
+              data: [2,1,1,1,1,1,1,1,1,1],
+              backgroundColor:'rgba(133, 209, 145, 1)',
+          }
+      ]
+  };
 
     return(
         <Box sx={{minWidth:200}}>

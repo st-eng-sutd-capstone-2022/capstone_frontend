@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Line } from 'react-chartjs-2';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
@@ -30,6 +30,11 @@ ChartJS.register(
 const LineChart = (props) => {
 
     const options = {
+        plugins: {
+            legend: {
+              display:false
+            },
+        },
         responsive: true,
         scales: {
             xAxis: {
@@ -40,8 +45,19 @@ const LineChart = (props) => {
             }
         }
     };
+    const labels = props.networkData.labels;
 
-    const data = props.data;
+    const data = {
+        labels,
+        datasets:[
+            {
+                data: props.networkData.datasets,
+                borderColor: 'rgb(24,118,209)',
+                backgroundColor:'rgb(24,118,209, 0.5)',
+                lineTension:0.5,
+            }
+        ]
+    };
 
     
     return(
