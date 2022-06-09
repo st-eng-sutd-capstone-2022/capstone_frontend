@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 
 const ListView = () => {
     return(
-        <div style={{ height: 400, width: '100%' }}>
+        <div style={{ height: 400, width: '95%',margin:'auto',marginTop:'20px'}}>
             <div style={{ display: 'flex', height: '100%' }}>
                 <div style={{ flexGrow: 1 }}>
                     <DataGrid columns={columns} rows={rows}/>

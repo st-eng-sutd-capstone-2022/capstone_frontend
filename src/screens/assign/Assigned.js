@@ -49,7 +49,7 @@ export default function StartEditButtonGrid() {
   }
 
   return (
-    <div style={{ height: 600, width: '100%' }}>
+    <div style={{ height: 500, width: '95%',margin:'auto',marginTop:'20px' }}>
       <DataGrid
 
         rows={rows}
