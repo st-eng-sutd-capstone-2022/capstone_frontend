@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 //need to call /user if params === add
 //need to call /boat/<id> if params !== add
 
-const AssignForm = () => {
+const AssignBoatForm = () => {
 
     const [location, setLocation] = useState('');
     const [serial,setSerial] = useState('');
@@ -110,4 +110,4 @@ const AssignForm = () => {
     )
 }
 
-export default AssignForm;
+export default AssignBoatForm;

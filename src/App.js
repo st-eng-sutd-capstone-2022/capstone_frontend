@@ -9,7 +9,8 @@ import Profile from './screens/profile/Profile';
 import Map from './screens/map/Map';
 import ResponsiveAppBar from './common/components/ResponsiveAppBar';
 import Assign from './screens/assign/Assign';
-import AssignForm from './screens/assign/AssignForm';
+import AssignBoatForm from './screens/assign/AssignBoatForm';
+import AssignLocationForm from './screens/assign/AssignLocationForm';
 import CreateAccount from './screens/profile/CreateAccount';
 import AppInstructions from './screens/profile/AppInstructions';
 import ChangePassword from './screens/profile/ChangePassword';
@@ -28,7 +29,8 @@ const App = () => {
         <Route path='/profile/instruction' element={<AppInstructions/>}/>
         <Route path="/liveview" element={<Map/>}/>
         <Route path="/assign" element={<Assign/>}/>
-        <Route path="/assign/:boatId" element={<AssignForm/>}/>
+        <Route path="/assign/boat/:boatId" element={<AssignBoatForm/>}/>
+        <Route path="/assign/location/:locationId" element={<AssignLocationForm/>}/>
         <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/>
         <Route path="*" element={<Navigate to ="/liveview" />}/>
       </Routes>

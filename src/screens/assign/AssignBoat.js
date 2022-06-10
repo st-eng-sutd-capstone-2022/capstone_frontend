@@ -13,7 +13,7 @@ function EditToolbar(props) {
     // Keep the focus in the cell
     event.preventDefault();
     console.log("mousedown")
-    navigate('/assign/add');
+    navigate('/assign/boat/add');
   };
 
   return (
@@ -39,7 +39,7 @@ function EditToolbar(props) {
 
 
 
-export default function StartEditButtonGrid() {
+export default function AssignBoat() {
   const navigate = useNavigate();
 
   const handleOnClick= (rowParams)=>{
