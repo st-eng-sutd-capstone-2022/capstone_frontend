@@ -41,6 +41,8 @@ const Profile = () => {
                 </CardActionArea>
             </Card>
             <br/>
+            {auth.type==="super" &&
+            <>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={()=>navigate('/profile/create-account')}>
                     <CardContent style={{textAlign:"center"}}>
@@ -53,6 +55,8 @@ const Profile = () => {
                 </CardActionArea>
             </Card>
             <br/>
+            </>
+            }
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={auth.logout}>
                     <CardContent style={{textAlign:"center"}}>

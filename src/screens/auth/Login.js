@@ -45,7 +45,7 @@ export default function Login() {
         password: data.get('password'),
       });
       console.log(response);
-      auth.login(response.data.access_token);
+      auth.login(response.data.access_token,response.data.type);
       navigate('/liveview');
     }
     catch (err) {

@@ -17,24 +17,40 @@ import ChangePassword from './screens/profile/ChangePassword';
 import ActivityWrapperWithDrawer from './screens/activity/ActivityWrapperWithDrawer';
 
 const App = () => {
-  const {token, login, logout} = useAuth()
+  const {token, login, logout, type} = useAuth()
 
   let routes;
   if(token){
-    routes = (
-      <Routes>
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path="/profile/change-password" element={<ChangePassword/>}/>
-        <Route path='/profile/create-account' element={<CreateAccount/>}/>
-        <Route path='/profile/instruction' element={<AppInstructions/>}/>
-        <Route path="/liveview" element={<Map/>}/>
-        <Route path="/assign" element={<Assign/>}/>
-        <Route path="/assign/boat/:boatId" element={<AssignBoatForm/>}/>
-        <Route path="/assign/location/:locationId" element={<AssignLocationForm/>}/>
-        <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/>
-        <Route path="*" element={<Navigate to ="/liveview" />}/>
-      </Routes>
-    )
+    if(type==="super"){
+      routes = (
+        <Routes>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/profile/change-password" element={<ChangePassword/>}/>
+          <Route path='/profile/create-account' element={<CreateAccount/>}/>
+          <Route path='/profile/instruction' element={<AppInstructions/>}/>
+          <Route path="/liveview" element={<Map/>}/>
+          <Route path="/assign" element={<Assign/>}/>
+          <Route path="/assign/boat/:boatId" element={<AssignBoatForm/>}/>
+          <Route path="/assign/location/:locationId" element={<AssignLocationForm/>}/>
+          <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/>
+          <Route path="*" element={<Navigate to ="/liveview" />}/>
+        </Routes>
+      )
+    } else{
+      routes = (
+        <Routes>
+          <Route path="/profile" element={<Profile/>}/>
+          <Route path="/profile/change-password" element={<ChangePassword/>}/>
+          <Route path='/profile/instruction' element={<AppInstructions/>}/>
+          <Route path="/liveview" element={<Map/>}/>
+          <Route path="/assign" element={<Assign/>}/>
+          <Route path="/assign/boat/:boatId" element={<AssignBoatForm/>}/>
+          <Route path="/assign/location/:locationId" element={<AssignLocationForm/>}/>
+          <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/>
+          <Route path="*" element={<Navigate to ="/liveview" />}/>
+        </Routes>
+      )
+    }
   } else {
     routes = (
       <Routes>
@@ -44,7 +60,7 @@ const App = () => {
     )
   }
   return(
-    <AuthContext.Provider value={{isLoggedIn: !!token, token:token, login:login, logout:logout}}>
+    <AuthContext.Provider value={{isLoggedIn: !!token, token:token, type:type, login:login, logout:logout}}>
       <Router>
         <ResponsiveAppBar/>
         <main>
