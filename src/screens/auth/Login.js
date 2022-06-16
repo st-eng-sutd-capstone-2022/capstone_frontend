@@ -35,9 +35,11 @@ const theme = createTheme();
 export default function Login() {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
+  const [errorPrompt,setErrorPrompt] = React.useState(false);
 
   const handleSubmit = async event => {
     event.preventDefault();
+    setErrorPrompt(false);
     const data = new FormData(event.currentTarget);
     try {
       const response = await apiClient.post('/auth/login', {
@@ -50,6 +52,7 @@ export default function Login() {
     }
     catch (err) {
       console.log(err);
+      setErrorPrompt(true);
     }
     
   };
@@ -82,6 +85,7 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              data-cy="email-input"
             />
             <TextField
               margin="normal"
@@ -92,9 +96,22 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              data-cy="password-input"
             />
-         
+            {errorPrompt && (
+                  <Typography
+                    style={{
+                      alignSelf: "flex-start",
+                      margin: "0px 14px 8px 14px",
+                      color: "red",
+                    }}
+                    data-cy="status-text"
+                  >
+                    Incorrect username / password
+                  </Typography>
+            )}
             <Button
+              data-cy="login-button"
               type="submit"
               fullWidth
               variant="contained"
