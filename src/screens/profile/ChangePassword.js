@@ -4,17 +4,42 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
 
+import {AuthContext} from '../../common/context/auth-context';
 
 const ChangePassword = () => {
+    const auth = React.useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const postChangePW = async (data) => {
+        await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/auth/change-password`,
+            {
+                password: data.get('currentPassword'),
+                newPassword: data.get('password'),
+            },
+            {
+            headers: {
+                'Authorization': `Bearer ${auth.token}`
+            },
+                
+        }).then(res => {
+            console.log(res);
+            navigate('/profile');
+            alert("Password changed successfully!");
+        })
+        .catch(function (error) {
+            console.log(error);
+          });
+        
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            currentPassword: data.get('currentPassword'),
-            password: data.get('password'),
-            confirmPassword: data.get('confirmPassword'),
-        });
+        postChangePW(data);
     };
 
     return (
@@ -40,14 +65,14 @@ const ChangePassword = () => {
                 label="New Password"
                 name="password"
                 />
-                <TextField
+                {/* <TextField
                 margin="normal"
                 required
                 fullWidth
                 name="confirmPassword"
                 label="Confirm Password"
                 id="confirmPassword"
-                />
+                /> */}
             
                 <Button
                 type="submit"
