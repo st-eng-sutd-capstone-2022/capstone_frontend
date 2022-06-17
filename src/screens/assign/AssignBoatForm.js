@@ -9,37 +9,73 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { useParams } from "react-router-dom";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
+import {AuthContext} from '../../common/context/auth-context';
 
 //need to call /user if params === add
 //need to call /boat/<id> if params !== add
 
 const AssignBoatForm = () => {
+    const auth = React.useContext(AuthContext);
+    const navigate = useNavigate();
 
     const [location, setLocation] = useState('');
     const [serial,setSerial] = useState('');
     const [username,setUsername] = useState('Sam');
     const [date,setDate] = useState(new Date().toLocaleDateString());
+    const [boatId,setBoatId] = useState(useParams().boatId);
 
-    const boatId = useParams().boatId;
+    const postAssign = async () => {
+        await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/assign`,
+            {
+                boatId: boatId,
+                serialNumber: serial,
+                location: location,
+            },
+            {
+            headers: {
+                'Authorization': `Bearer ${auth.token}`
+            },
+                
+        }).then(res => {
+            console.log(res);
+            navigate('/assign');
+        })
+        .catch(function (error) {
+            console.log(error);
+          });
+        
+    }
+
+
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-          employeeId: data.get('employeeId'),
-          name: data.get('name'),
-          email: data.get('email'),
-        });
+        postAssign();
     };
 
     const handleLocationChange = (event) => {
         setLocation(event.target.value);
       };
 
+    const handleBoatIdChange = (event) => {
+        setBoatId(event.target.value);
+    }
+    
+    const handleSerialChange = (event) => {
+        setSerial(event.target.value);
+    }
+
     return(
         <Container maxWidth="sm">
             <Typography variant="h5" style={{marginTop:"20px"}}>
-                {boatId ==="add"?"Add Boat":("Edit Boat"+boatId)}
+                {useParams().boatId ==="add"?"Add Boat":("Edit Boat"+boatId)}
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -50,6 +86,7 @@ const AssignBoatForm = () => {
                 label="Boat ID"
                 name="boatId"
                 autoFocus
+                onChange={handleBoatIdChange}
                 {...(boatId ==="add"?{value:""}:{value:boatId})}
                 />
                 <FormControl fullWidth sx={{mt:2}}>
@@ -74,7 +111,7 @@ const AssignBoatForm = () => {
                 id="serial"
                 label="Serial Number"
                 name="serial"
-               
+                onChange={handleSerialChange}
                 {...(boatId ==="add"?{value:""}:{value:serial})}
                 />
                 <TextField
