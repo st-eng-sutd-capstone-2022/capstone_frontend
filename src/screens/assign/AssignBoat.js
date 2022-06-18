@@ -58,7 +58,11 @@ export default function AssignBoat() {
     return data;
   }
 
-  const {isLoading, error, data, isFetching} = useQuery('assign', getAssign);
+  const [mode, setMode] = React.useState('upcoming');
+
+  const {isLoading, error, data, isFetching} = useQuery(`assign-${mode}`, getAssign, {
+    initialData: [{id:1,boatId:1,serialNumber:'123',location:'123'}],
+  });
   console.log(data);
 
   const columns = [
@@ -101,25 +105,14 @@ export default function AssignBoat() {
   
   ];
   
-  let rows;
-  if(data){
-    rows = data;
-  }else{
-    rows = [
-      {
-      id:1,
-      boatId: "",
-      }
-    ];
-  }
+  const rows = data
  
 
   const navigate = useNavigate();
 
   const handleOnClick= (rowParams)=>{
-    console.log(rowParams)
+    console.log(rowParams.id);
     //navigate('/assign/'+rowParams.boatId);
-
   }
 
   return (

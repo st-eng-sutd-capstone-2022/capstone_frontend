@@ -81,6 +81,7 @@ const ResponsiveAppBar = () => {
               onClose={handleCloseNavMenu}
               sx={{
                 display: { xs: 'block', md: 'none' },
+                zIndex:'9000'
               }}
             >
               {pages.map((page) => (
