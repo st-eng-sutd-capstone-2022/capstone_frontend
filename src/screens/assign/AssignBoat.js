@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
+import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { DataGrid, GridCellModes } from '@mui/x-data-grid';
@@ -44,6 +44,7 @@ function EditToolbar(props) {
 export default function AssignBoat() {
 
   const auth = React.useContext(AuthContext);
+  const navigate = useNavigate();
 
   const getAssign = async () => {
 
@@ -57,15 +58,34 @@ export default function AssignBoat() {
     data.forEach((o,i)=>o.id=i+1);
     return data;
   }
+  const delAssign = async (rowBoatId) => {
+    axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}/assign/${rowBoatId}`,
+        {
+        headers: {
+            'Authorization': `Bearer ${auth.token}`
+        },
+            
+    }).then(res => {
+        alert('Deleted successfully');
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+  }
 
-  const [mode, setMode] = React.useState('upcoming');
-
-  const {isLoading, error, data, isFetching} = useQuery(`assign-${mode}`, getAssign, {
-    initialData: [{id:1,boatId:1,serialNumber:'123',location:'123'}],
-  });
-  console.log(data);
+  const {isLoading, error, data, isFetching} = useQuery(`assign`, getAssign);
+  
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   const columns = [
+    {field:'_id',headerName:'ID',width:0,hide:true},
     { field: 'boatId', headerName: 'Boat ID', width: 60 },
     { field: 'location', headerName: 'Location', width: 140},
     {
@@ -91,7 +111,8 @@ export default function AssignBoat() {
             size="small"
             onClick={(event) => {
               event.ignore = true;
-              console.log("delete");
+              console.log(params.getValue(params.id,'boatId'));
+              delAssign(params.getValue(params.id,'boatId'));
               event.stopPropagation();
             }}
             style={{ marginLeft: 16 }}
@@ -107,12 +128,20 @@ export default function AssignBoat() {
   
   const rows = data
  
-
-  const navigate = useNavigate();
-
   const handleOnClick= (rowParams)=>{
-    console.log(rowParams.id);
-    //navigate('/assign/'+rowParams.boatId);
+    const rowBoatObjectId = rowParams.getValue(rowParams.id,'_id');
+    const rowBoatId = rowParams.getValue(rowParams.id,'boatId');
+    const rowSerial = rowParams.getValue(rowParams.id,'serialNumber');
+    const rowLocation = rowParams.getValue(rowParams.id,'location');
+    console.log(rowLocation);
+    navigate('/assign/boat/'+rowBoatObjectId,{
+      state: {
+        _id: rowBoatObjectId,
+        boatId: rowBoatId,
+        serialNumber: rowSerial,
+        location: rowLocation
+      }
+    });
   }
 
   return (
@@ -121,10 +150,9 @@ export default function AssignBoat() {
 
         rows={rows}
         columns={columns}
-        onRowClick={(event, params) => {
-          console.log(params);
+        onRowClick={(params, event, details) => {
           if (!event.ignore) {
-            handleOnClick(params.row);
+            handleOnClick(params);
           }
         }}
         components={{

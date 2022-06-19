@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
@@ -12,24 +12,32 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 
 import {AuthContext} from '../../common/context/auth-context';
 
-//need to call /user if params === add
-//need to call /boat/<id> if params !== add
-
-const AssignBoatForm = () => {
+const AssignBoatForm = (props) => {
     const auth = React.useContext(AuthContext);
     const navigate = useNavigate();
+    const statelocation = useLocation();
+
+    console.log(useParams());
 
     const [location, setLocation] = useState('');
     const [serial,setSerial] = useState('');
-    const [username,setUsername] = useState('Sam');
     const [date,setDate] = useState(new Date().toLocaleDateString());
-    const [boatId,setBoatId] = useState(useParams().boatId);
+    const [boatId,setBoatId] = useState('');
+
+    React.useEffect(() => {
+        if(statelocation.pathname !== '/assign/boat/add'){
+        setLocation(statelocation.state.location);
+        setSerial(statelocation.state.serialNumber);
+        setBoatId(statelocation.state.boatId);
+        }
+    },[statelocation]);
 
     const postAssign = async () => {
-        await axios.post(
+        axios.post(
             `${process.env.REACT_APP_BACKEND_URL}/assign`,
             {
                 boatId: boatId,
@@ -44,6 +52,7 @@ const AssignBoatForm = () => {
         }).then(res => {
             console.log(res);
             navigate('/assign');
+            alert('Assign success');
         })
         .catch(function (error) {
             console.log(error);
@@ -51,10 +60,38 @@ const AssignBoatForm = () => {
         
     }
 
+    const patchAssign = async () => {
+        axios.put(
+            `${process.env.REACT_APP_BACKEND_URL}/assign/${statelocation.state._id}`,
+            {
+                boatId: boatId,
+                serialNumber: serial,
+                location: location,
+            },
+            {
+            headers: {
+                'Authorization': `Bearer ${auth.token}`
+            },
+                
+        }).then(res => {
+            console.log(res);
+            navigate('/assign');
+            alert('Edit success');
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        postAssign();
+        if(statelocation.pathname !== '/assign/boat/add'){
+            patchAssign();
+        }
+        else{
+            postAssign();
+        }
     };
 
     const handleLocationChange = (event) => {
@@ -72,7 +109,7 @@ const AssignBoatForm = () => {
     return(
         <Container maxWidth="sm">
             <Typography variant="h5" style={{marginTop:"20px"}}>
-                {useParams().boatId ==="add"?"Add Boat":("Edit Boat"+boatId)}
+                {useParams().id ==="add"?"Add Boat":("Edit Boat "+boatId)}
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
@@ -96,8 +133,8 @@ const AssignBoatForm = () => {
                       label="location"
                       onChange={handleLocationChange}
                   >
-                      <MenuItem value={"Seletar Reservior"}>Seletar Reservoir</MenuItem>
-                      <MenuItem value={"Bedok Reservoir"}>Bedok Reservoir</MenuItem>
+                      <MenuItem value={"Seletar"}>Seletar</MenuItem>
+                      <MenuItem value={"Bedok"}>Bedok Reservoir</MenuItem>
                     
                   </Select>
                 </FormControl>
@@ -111,7 +148,7 @@ const AssignBoatForm = () => {
                 onChange={handleSerialChange}
                 {...(boatId ==="add"?{value:""}:{value:serial})}
                 />
-                <TextField
+                {/* <TextField
                 margin="normal"
                 disabled
                 fullWidth
@@ -119,7 +156,7 @@ const AssignBoatForm = () => {
                 label="Username"
                 name="username"
                 value={username}
-                />
+                /> */}
                 <TextField
                 margin="normal"
                 disabled
@@ -135,7 +172,7 @@ const AssignBoatForm = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 >
-                Create
+                {useParams().id ==="add"?"Add Boat":"Edit Boat "+boatId}
                 </Button>
                 
             </Box>
