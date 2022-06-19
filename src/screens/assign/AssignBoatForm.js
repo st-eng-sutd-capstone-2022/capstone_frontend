@@ -134,7 +134,7 @@ const AssignBoatForm = (props) => {
                       onChange={handleLocationChange}
                   >
                       <MenuItem value={"Seletar"}>Seletar</MenuItem>
-                      <MenuItem value={"Bedok"}>Bedok Reservoir</MenuItem>
+                      <MenuItem value={"Bedok"}>Bedok</MenuItem>
                     
                   </Select>
                 </FormControl>

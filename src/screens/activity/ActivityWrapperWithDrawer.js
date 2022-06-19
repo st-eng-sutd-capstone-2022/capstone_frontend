@@ -74,8 +74,8 @@ export const ActivityWrapperWithDrawer = () => {
                       label="location"
                       onChange={handleLocationChange}
                   >
-                      <MenuItem value={"Seletar Reservior"}>Seletar Reservoir</MenuItem>
-                      <MenuItem value={"Bedok Reservoir"}>Bedok Reservoir</MenuItem>
+                      <MenuItem value={"Seletar"}>Seletar</MenuItem>
+                      <MenuItem value={"Bedok"}>Bedok</MenuItem>
                     
                   </Select>
               </FormControl>

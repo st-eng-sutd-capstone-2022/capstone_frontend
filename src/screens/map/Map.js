@@ -25,7 +25,7 @@ const locationData = [
     {location:"Seletar",
     lat:1.4123541,
     lng:103.8416441},
-    {location:"Bedok Reservoir",
+    {location:"Bedok",
     lat:1.3425956,
     lng:103.9220676},
 ]
