@@ -8,9 +8,13 @@ import Select from '@mui/material/Select';
 import GoogleMapReact from "google-map-react";
 import Markers from "./components/Markers";
 import Button from '@mui/material/Button';
+import { useQuery } from "react-query";
+import axios from "axios";
 
 import './Map.css';
+import {AuthContext} from '../../common/context/auth-context';
 import ListView from "./ListView";
+import { Typography } from "@mui/material";
 
 const boatObj = {
     id : "100100",
@@ -21,19 +25,67 @@ const boatObj = {
     lng:103.838530,
 }
 
-const locationData = [
-    {location:"Seletar",
-    lat:1.4123541,
-    lng:103.8416441},
-    {location:"Bedok",
-    lat:1.3425956,
-    lng:103.9220676},
-]
+
+const calculateCentroid = (lats,longs) => {
+    const lat = lats.reduce((a, b) => a + b, 0)/lats.length;
+    const long = longs.reduce((a, b) => a + b, 0)/longs.length;
+    return {lat, long};
+}
 
 const Map = () => {
+    const auth = React.useContext(AuthContext);
 
     const [location, setLocation] = useState({location:"Seletar",lat:1.4123541,lng:103.8416441});
     const [mapView, setMapView] = useState(true);
+
+    const getLocations = async () => {
+
+        let {data} = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/location`,{
+              headers: {
+                'Authorization': `Bearer ${auth.token}`
+              }
+          })
+        return data;
+    }
+
+    const getLiveBoat = async() =>{
+        let {data} = await axios.get(
+            `${process.env.REACT_APP_BACKEND_URL}/location/liveboats`,{
+                headers: {
+                    'Authorization': `Bearer ${auth.token}`
+                  }
+            }
+        )
+        return data
+    }
+
+    const {isLoading, error, data} = useQuery('locations', getLocations);
+    const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat);
+
+    // console.log(liveData);
+    // liveData.map((boat,index)=>{
+    //     console.log(boat.boatID);
+    // })
+    
+    if(isLoading || liveLoading){
+        return <h1>loading</h1>
+    }
+
+    const locationData = data.filter(o=>o.location===location.location);
+
+    console.log(locationData);
+
+    let centroids = [];
+    for(var i =0; i < locationData.length; i++){
+        for (var j = 0; j < locationData[i].zones.length; j++){
+            const centroid = calculateCentroid(locationData[i].zones[j].lats,locationData[i].zones[j].longs);
+            const name = locationData[i].zones[j].name;
+            centroids.push({name,lat:centroid.lat,lng:centroid.long});
+        }
+    }
+
+    console.log(centroids);
 
     const handleChange = (event) => {
         setLocation(event.target.value);
@@ -50,53 +102,40 @@ const Map = () => {
       };
     
     const handleGoogleMapApi = (google) => {
-        var flightPath1 = new google.maps.Polyline({
-            path: [ { "lat": 1.409413, "lng": 103.837896 },{ "lat": 1.398108, "lng": 103.840167 } ],
-            geodesic: true,
-            strokeColor: '#DB5F5F',
-            strokeOpacity: 0,
-            icons: [
-                {
-                  icon: lineSymbol,
-                  offset: "0",
-                  repeat: "20px",
-                },
-            ],
-            strokeWeight: 1
-        });
-        var flightPath2 = new google.maps.Polyline({
-            path: [ { "lat": 1.408092, "lng": 103.845198 },{ "lat": 1.404102, "lng": 103.846333} ],
-            geodesic: true,
-            strokeColor: '#DB5F5F',
-            strokeOpacity: 0,
-            icons: [
-                {
-                  icon: lineSymbol,
-                  offset: "0",
-                  repeat: "20px",
-                },
-            ],
-            strokeWeight: 1
-        });
-        var flightPath3 = new google.maps.Polyline({
-            path: [ { "lat": 1.413085, "lng": 103.849976 },{ "lat": 1.410249, "lng": 103.852984} ],
-            geodesic: true,
-            strokeColor: '#DB5F5F',
-            strokeOpacity: 0,
-            icons: [
-                {
-                  icon: lineSymbol,
-                  offset: "0",
-                  repeat: "20px",
-                },
-            ],
-            strokeWeight: 1
-        });
-    
-        flightPath1.setMap(google.map);
-        flightPath2.setMap(google.map);
-        flightPath3.setMap(google.map);
+        let flightpaths = [];
+        for(var i =0; i < data.length; i++){
+            for (var j = 0; j < data[i].zones.length; j++){
+                console.log(data[i].zones[j].lats[0]);
+                var flightPath = new google.maps.Polyline({
+                    path: [ 
+                        { "lat": data[i].zones[j].lats[0], "lng": data[i].zones[j].longs[0] },
+                        { "lat": data[i].zones[j].lats[1], "lng": data[i].zones[j].longs[1] }, 
+                        { "lat": data[i].zones[j].lats[2], "lng": data[i].zones[j].longs[2] },
+                        { "lat": data[i].zones[j].lats[3], "lng": data[i].zones[j].longs[3] }, 
+                        { "lat": data[i].zones[j].lats[0], "lng": data[i].zones[j].longs[0] }],
+                    geodesic: true,
+                    strokeColor: '#DB5F5F',
+                    strokeOpacity: 0,
+                    icons: [
+                        {
+                          icon: lineSymbol,
+                          offset: "0",
+                          repeat: "20px",
+                        },
+                    ],
+                    strokeWeight: 1
+                });
+                flightpaths.push(flightPath);
+            }
+        }
+       
+        for (var i = 0; i < flightpaths.length; i++) {
+            flightpaths[i].setMap(google.map);
+        }
+      
     }   
+
+    console.log(location);
 
     
     return(
@@ -109,15 +148,16 @@ const Map = () => {
                         labelId="location-label"
                         id="location-select"
                         defaultValue=""
-                        value={location.location}
+                        value={location.location || ""}
                         label="Location"
                         onChange={handleChange}
                         MenuProps={{
                             style: {zIndex: 1700}
                         }}
                         >   
-                            {locationData.map((data, index) => {
-                                return <MenuItem key={index} value={data}>{data.location}</MenuItem>
+                            {data.map((d, index) => {
+                                const loc = {location:d.location,lat:d.lat,lng:d.long};
+                                return <MenuItem key={index} value={loc}>{d.location}</MenuItem>
                             })}
                             
                         </Select>
@@ -131,13 +171,13 @@ const Map = () => {
                 <Grid item xs={12} md={6} className="grid_margin">
                     <Grid container spacing={2} style={{paddingLeft:10,paddingRight:10}}>
                         <Grid item xs={4} md={3}>
-                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"green",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"#85D191",borderRadius:"50%",display:"inline-block"}}></span> Active </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"yellow",borderRadius:"50%",display:"inline-block"}}></span> Inactive </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"#D98C8C",borderRadius:"50%",display:"inline-block"}}></span> Inactive </span>
                         </Grid>
                         <Grid item xs={4} md={3}>
-                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"red",borderRadius:"50%",display:"inline-block"}}></span> Moving </span>
+                            <span className="spanBg"><span style={{height:15,width:15,backgroundColor:"#EDEF7C",borderRadius:"50%",display:"inline-block"}}></span> Moving </span>
                         </Grid>
                     </Grid>  
                   
@@ -169,13 +209,27 @@ const Map = () => {
                 yesIWantToUseGoogleMapApiInternals
                 onGoogleApiLoaded={handleGoogleMapApi}
             
-            >
-                <Markers
-                    key = {boatObj.id}
-                    boatObj={boatObj}
-                    lat={boatObj.lat}
-                    lng={boatObj.lng}
-                />
+            >   
+             
+                {liveData.map((boat,index)=>{
+                    return <Markers
+                        key = {boat.boatID}
+                        boatId = {boat.boatID}
+                        status={boat.status}
+                        weight = {boat.weight.kg}
+                        battery = {boat.battery}
+                        lat={boat.lat}
+                        lng={boat.lng}
+                    />
+                })}
+               
+                {centroids.map((centroid, index) => {
+                    return(
+                    <Typography lat={centroid.lat} lng={centroid.lng} sx={{width:"50px",color:"red"}}>
+                        Zone {centroid.name}
+                    </Typography>
+                    )
+                })}
             
             </GoogleMapReact> : 
             <ListView/>
@@ -187,28 +241,4 @@ const Map = () => {
 
 
 export default Map;
-
-//polling code for future api integration
-// const [state, setState] = React.useState(0)
-// const [timer, setTimer] = React.useState(null)
-// const [isMounted, setIsMounted] = React.useState(false)
-
-// async function updateDevicePosition () {
-//   try {
-//     const result = await fetch('http://192.168.10.233:34599/')
-//     const data = await result.json()
-//     setState(data.x)
-//   } catch (e) {
-//     console.error(e)
-//   }
-//   clearTimeout(timer)
-//   setTimer(setTimeout(updateDevicePosition, 200))
-// }
-
-// useEffect(() => {
-//   if (!isMounted) {
-//      updateDevicePosition()
-//      setIsMounted(true)
-//   }
-// })
 

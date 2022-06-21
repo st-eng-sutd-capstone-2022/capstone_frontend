@@ -1,10 +1,18 @@
 import { Typography } from '@mui/material';
 
-const Markers = ({boatObj}) => {
-    const bColor = boatObj.status==="active"
-        ? "#4FAF2D"
-        : "#CA3F3C";
-    return <LargeRectangleMarker id={boatObj.id} battery={boatObj.battery} weight={boatObj.weight} bColor={bColor} />
+const Markers = (props) => {
+    let bColor;
+    switch (props.status){
+        case "active":
+            bColor = "#85D191";
+            break;
+        case "inactive":
+            bColor = "#D98C8C";
+            break;
+        case "moving":
+            bColor = "#EDEF7C"
+    }
+    return <LargeRectangleMarker id={props.boatId} battery={props.battery} weight={props.weight} bColor={bColor} />
 
 }
 
@@ -29,8 +37,7 @@ const LargeRectangleMarker = ( {
                 style={{
                     minHeight: 32,
                     minWidth: 160,
-                    backgroundColor: "#48466D",
-                    backgroundImage:  `linear-gradient(108.63deg, #FFE86D 18.18%, #FFFFFF 33.97%, #fff3e3 44.05%, #fffdc3 53.09%, #fff 62.61%)`,
+                    backgroundColor: "#fff",
                     borderWidth: 4,
                     borderColor: bColor,
                     borderStyle: "solid",
