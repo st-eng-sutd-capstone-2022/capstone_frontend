@@ -16,4 +16,11 @@ describe('Test our basic auth functions', () => {
 		cy.get('[data-cy=login-button]').click()
 		cy.get('[data-cy=status-text]').contains('Incorrect')
 	})
+	it('login with username and password',()=> {
+		cy.visit('/login')
+		cy.get('[data-cy=email-input]').type('mike@mike.com')
+		cy.get('[data-cy=password-input]').type('123456')
+		cy.get('[data-cy=login-button]').click()
+		cy.wait(500)
+	})
 })

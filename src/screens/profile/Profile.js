@@ -60,7 +60,7 @@ const Profile = () => {
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={auth.logout}>
                     <CardContent style={{textAlign:"center"}}>
-                    <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}}>
+                    <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}} data-cy="logout">
                         Log Out
                         <ChevronRightIcon style={{textAlign:"right"}}/>
                     </Typography>
