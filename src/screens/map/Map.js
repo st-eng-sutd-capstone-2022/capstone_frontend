@@ -10,6 +10,8 @@ import Markers from "./components/Markers";
 import Button from '@mui/material/Button';
 import { useQuery } from "react-query";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import './Map.css';
 import {AuthContext} from '../../common/context/auth-context';
@@ -63,13 +65,13 @@ const Map = () => {
     const {isLoading, error, data} = useQuery('locations', getLocations);
     const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat);
 
-    // console.log(liveData);
-    // liveData.map((boat,index)=>{
-    //     console.log(boat.boatID);
-    // })
     
     if(isLoading || liveLoading){
-        return <h1>loading</h1>
+        return (
+            <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
+                <CircularProgress />
+            </Box>
+        )
     }
 
     const locationData = data.filter(o=>o.location===location.location);

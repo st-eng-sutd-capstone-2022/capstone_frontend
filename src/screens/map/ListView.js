@@ -2,6 +2,8 @@ import React from "react";
 import { DataGrid } from '@mui/x-data-grid';
 import { useQuery } from "react-query";
 import axios from "axios";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 import {AuthContext} from '../../common/context/auth-context';
 
@@ -21,7 +23,11 @@ const ListView = () => {
     }
     const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat);
     if(liveLoading){
-        return <h1>loading</h1>
+        return(
+            <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
+                <CircularProgress />
+            </Box>
+        )
     }
 
     const columns = [
