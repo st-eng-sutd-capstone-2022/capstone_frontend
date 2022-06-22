@@ -11,16 +11,31 @@ describe('Test our basic auth functions', () => {
 		cy.get('[data-cy=status-text]').contains('Incorrect')
 	})
 	it('cannot login without username',()=>{
-		cy.visit('/')
+		cy.visit('/login')
 		cy.get('[data-cy=password-input]').type('123123')
 		cy.get('[data-cy=login-button]').click()
 		cy.get('[data-cy=status-text]').contains('Incorrect')
 	})
-	it('login with username and password',()=> {
+	it('login with super admin username and password',()=> {
 		cy.visit('/login')
 		cy.get('[data-cy=email-input]').type('mike@mike.com')
 		cy.get('[data-cy=password-input]').type('123456')
 		cy.get('[data-cy=login-button]').click()
 		cy.wait(500)
+		cy.visit('/profile')
+		cy.wait(500)
+		cy.get('[data-cy=create]').contains('Create')
+		cy.get('[data-cy=logout]').click()
+	})
+	it('login with normal username and password',()=>{
+		cy.visit('/login')
+		cy.get('[data-cy=email-input]').type('mike-user@gmail.com')
+		cy.get('[data-cy=password-input]').type('password1.1')
+		cy.get('[data-cy=login-button]').click()
+		cy.wait(1000)
+		cy.visit('/profile')
+		cy.wait(1000)
+		cy.get('[data-cy=create').should('not.exist');
+		cy.get('[data-cy=logout]').click()
 	})
 })

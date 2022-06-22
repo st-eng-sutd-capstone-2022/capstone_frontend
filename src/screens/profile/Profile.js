@@ -15,6 +15,11 @@ const Profile = () => {
     const navigate = useNavigate();
     const auth = React.useContext(AuthContext);
 
+    const handleLogout = () => {
+        auth.logout();
+        navigate('/login');
+    }
+
     return(
         <Box sx={{margin:"20px" }}>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
@@ -46,7 +51,7 @@ const Profile = () => {
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={()=>navigate('/profile/create-account')}>
                     <CardContent style={{textAlign:"center"}}>
-                    <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}}>
+                    <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}} data-cy="create">
                         Create Account
                         <ChevronRightIcon style={{textAlign:"right"}}/>
                     </Typography>
@@ -58,7 +63,7 @@ const Profile = () => {
             </>
             }
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
-                <CardActionArea onClick={auth.logout}>
+                <CardActionArea onClick={handleLogout}>
                     <CardContent style={{textAlign:"center"}}>
                     <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}} data-cy="logout">
                         Log Out
