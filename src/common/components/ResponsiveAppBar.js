@@ -15,12 +15,21 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
 import boatLogo from '../../assets/images/boat_logo.png';
+import { AuthContext } from '../context/auth-context';
 
-const pages = ['live view', 'activity log', 'assign', 'profile'];
+
 
 const ResponsiveAppBar = () => {
   const navigate = useNavigate();
+  const auth = React.useContext(AuthContext);
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  let pages;
+  if(auth.type==="super"){
+    pages = ['live view', 'activity log', 'assign', 'profile'];
+  } else {
+    pages = ['live view', 'activity log', 'profile'];
+  }
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);

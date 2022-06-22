@@ -43,10 +43,7 @@ const App = () => {
           <Route path="/profile/change-password" element={<ChangePassword/>}/>
           <Route path='/profile/instruction' element={<AppInstructions/>}/>
           <Route path="/liveview" element={<Map/>}/>
-          <Route path="/assign" element={<Assign/>}/>
-          <Route path="/assign/boat/:id" element={<AssignBoatForm/>}/>
-          <Route path="/assign/location/:locationId" element={<AssignLocationForm/>}/>
-          <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/>
+          <Route path="/activitylog" element={<ActivityWrapperWithDrawer/>}/> 
           <Route path="*" element={<Navigate to ="/liveview" />}/>
         </Routes>
       )
