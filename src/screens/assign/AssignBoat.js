@@ -6,8 +6,15 @@ import { DataGrid, GridCellModes } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from "react-query";
 import axios from "axios";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { useLocation } from 'react-router-dom';
 
 import {AuthContext} from '../../common/context/auth-context';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function EditToolbar(props) {
 
@@ -43,9 +50,17 @@ function EditToolbar(props) {
 }
 
 export default function AssignBoat() {
-
+  const [open, setOpen] = React.useState(false);
   const auth = React.useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  React.useEffect(()=>{
+    if(location?.state?.msg){
+        setOpen(true);
+        navigate(location.pathname, {});  
+    }
+  },[location])
 
   const getAssign = async () => {
 
@@ -68,7 +83,7 @@ export default function AssignBoat() {
         },
             
     }).then(res => {
-        alert('Deleted successfully');
+       setOpen(true);
     })
     .catch(function (error) {
         console.log(error);
@@ -145,8 +160,20 @@ export default function AssignBoat() {
     });
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
+
   return (
     <div style={{ height: 500, width: '95%',margin:'auto',marginTop:'20px' }}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        {location?.state?.msg || "Successfully deleted Boat"}
+        </Alert>
+      </Snackbar>
       <DataGrid
         sx={{cursor: 'pointer'}}
         rows={rows}

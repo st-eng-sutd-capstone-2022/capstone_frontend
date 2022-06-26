@@ -13,10 +13,17 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import {useLocation} from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import {AuthContext} from '../../common/context/auth-context';
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const AssignBoatForm = (props) => {
+    const [open, setOpen] = React.useState(false);
     const auth = React.useContext(AuthContext);
     const navigate = useNavigate();
     const statelocation = useLocation();
@@ -51,11 +58,11 @@ const AssignBoatForm = (props) => {
                 
         }).then(res => {
             console.log(res);
-            navigate('/assign');
-            // alert('Assign success');
+            navigate('/assign',{ state: { msg: "Successfully Created Boat" } });
         })
         .catch(function (error) {
             console.log(error);
+            setOpen(true);
           });
         
     }
@@ -75,13 +82,21 @@ const AssignBoatForm = (props) => {
                 
         }).then(res => {
             console.log(res);
-            navigate('/assign');
-            alert('Edit success');
+            navigate('/assign',{ state: { msg: "Successfully Edited Boat" } });
         })
         .catch(function (error) {
             console.log(error);
+            setOpen(true);
         });
     }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -108,6 +123,11 @@ const AssignBoatForm = (props) => {
 
     return(
         <Container maxWidth="sm">
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                Failed to assign boat!
+                </Alert>
+             </Snackbar>
             <Typography variant="h5" style={{marginTop:"20px"}}>
                 {useParams().id ==="add"?"Add Boat":("Edit Boat "+boatId)}
             </Typography>
