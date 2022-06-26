@@ -52,7 +52,7 @@ const AssignBoatForm = (props) => {
         }).then(res => {
             console.log(res);
             navigate('/assign');
-            alert('Assign success');
+            // alert('Assign success');
         })
         .catch(function (error) {
             console.log(error);
@@ -113,6 +113,7 @@ const AssignBoatForm = (props) => {
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                 <TextField
+                data-cy="boatId"
                 margin="normal"
                 required
                 fullWidth
@@ -127,6 +128,7 @@ const AssignBoatForm = (props) => {
                   <InputLabel id="locationLabel">Location</InputLabel>
                   <Select
                       labelId="location"
+                      data-cy="locationSelect"
                       id="location"
                       required
                       value={location}
@@ -139,6 +141,7 @@ const AssignBoatForm = (props) => {
                   </Select>
                 </FormControl>
                 <TextField
+                data-cy="serial"
                 margin="normal"
                 required
                 fullWidth
@@ -167,6 +170,7 @@ const AssignBoatForm = (props) => {
                 value={date}
                 />
                 <Button
+                data-cy="submitBoat"
                 type="submit"
                 fullWidth
                 variant="contained"

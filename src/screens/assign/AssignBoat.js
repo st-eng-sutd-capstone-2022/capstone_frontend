@@ -33,6 +33,7 @@ function EditToolbar(props) {
         color="primary"
         variant="outlined"
         sx={{ mr: 1 }}
+        data-cy="add"
         >
         Add
       </Button>
