@@ -62,7 +62,7 @@ const Profile = (props) => {
                     </CardContent>
                 </CardActionArea>
             </Card>
-            <br/>
+            {/* <br/>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={()=>navigate('/profile/instruction')}>
                     <CardContent style={{textAlign:"center"}}>
@@ -73,7 +73,7 @@ const Profile = (props) => {
                     
                     </CardContent>
                 </CardActionArea>
-            </Card>
+            </Card> */}
             <br/>
             {auth.type==="super" &&
             <>
