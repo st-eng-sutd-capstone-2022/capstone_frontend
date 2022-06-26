@@ -7,21 +7,50 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
 import { useNavigate } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import { useLocation } from 'react-router-dom';
+
 import {AuthContext} from '../../common/context/auth-context';
 
-const Profile = () => {
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+const Profile = (props) => {
+    const [open, setOpen] = React.useState(false);
     const navigate = useNavigate();
     const auth = React.useContext(AuthContext);
+    const location = useLocation();
 
     const handleLogout = () => {
         auth.logout();
         navigate('/login');
     }
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpen(false);
+    };
+
+    React.useEffect(()=>{
+        if(location?.state?.success){
+            setOpen(true);
+        }
+    },[location])
+    
+
     return(
         <Box sx={{margin:"20px" }}>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                This is a success message!
+                </Alert>
+             </Snackbar>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={()=>navigate('/profile/change-password')}>
                     <CardContent style={{textAlign:"center"}}>

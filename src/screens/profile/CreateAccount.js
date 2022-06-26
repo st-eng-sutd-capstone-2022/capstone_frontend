@@ -4,20 +4,49 @@ import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { Typography } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
+import {AuthContext} from '../../common/context/auth-context';
 
 const CreateAccount = () => {
+    
+    const auth = React.useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const postCreateAccount = async (data) => {
+        await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/auth/create-user`,
+            {
+                username: data.get('name'),
+                employeeId: data.get('employeeId'),
+                email: data.get('email'),
+                password: data.get('password')
+            },
+            {
+            headers: {
+                'Authorization': `Bearer ${auth.token}`
+            },
+                
+        }).then(res => {
+            console.log(res);
+            navigate('/profile',{ state: { success: true } });
+            
+        })
+        .catch(function (error) {
+            console.log(error);
+          });
+        
+    }
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-          employeeId: data.get('employeeId'),
-          name: data.get('name'),
-          email: data.get('email'),
-        });
+        postCreateAccount(data);
     };
 
     return (
         <Container maxWidth="sm">
+            
             <Typography variant="h5" style={{marginTop:"20px"}}>
                 Create Sub Account
             </Typography>
@@ -46,6 +75,15 @@ const CreateAccount = () => {
                 name="email"
                 label="Email"
                 id="email"
+                />
+                <TextField
+                margin="normal"
+                required
+                fullWidth
+                type="password"
+                name="password"
+                label="password"
+                id="password"
                 />
             
                 <Button
