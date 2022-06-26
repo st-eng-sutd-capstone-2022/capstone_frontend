@@ -148,7 +148,7 @@ export default function AssignBoat() {
   return (
     <div style={{ height: 500, width: '95%',margin:'auto',marginTop:'20px' }}>
       <DataGrid
-
+        sx={{cursor: 'pointer'}}
         rows={rows}
         columns={columns}
         onRowClick={(params, event, details) => {
