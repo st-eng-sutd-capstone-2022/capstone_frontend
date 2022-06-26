@@ -34,8 +34,7 @@ const ChangePassword = () => {
                 
         }).then(res => {
             console.log(res);
-            navigate('/profile');
-            alert("Password changed successfully!");
+            navigate('/profile',{ state: { msg: "Successfully Changed Password" } });
         })
         .catch(function (error) {
             console.log(error);

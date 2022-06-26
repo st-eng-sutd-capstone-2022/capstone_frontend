@@ -36,7 +36,7 @@ const CreateAccount = () => {
                 
         }).then(res => {
             console.log(res);
-            navigate('/profile',{ state: { success: true } });
+            navigate('/profile',{ state: { msg: "Successfully Created Account" } });
             
         })
         .catch(function (error) {

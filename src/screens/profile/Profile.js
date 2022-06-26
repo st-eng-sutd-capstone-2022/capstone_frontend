@@ -38,7 +38,7 @@ const Profile = (props) => {
     };
 
     React.useEffect(()=>{
-        if(location?.state?.success){
+        if(location?.state?.msg){
             setOpen(true);
         }
     },[location])
@@ -48,7 +48,7 @@ const Profile = (props) => {
         <Box sx={{margin:"20px" }}>
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                This is a success message!
+                {location?.state?.msg}
                 </Alert>
              </Snackbar>
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
