@@ -51,6 +51,8 @@ function EditToolbar(props) {
 
 export default function AssignBoat() {
   const [open, setOpen] = React.useState(false);
+  const [msg,setMsg] = React.useState("");
+  const [severity,setSeverity] = React.useState("success");
   const auth = React.useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,6 +60,7 @@ export default function AssignBoat() {
   React.useEffect(()=>{
     if(location?.state?.msg){
         setOpen(true);
+        setMsg(location.state.msg)
         navigate(location.pathname, {});  
     }
   },[location])
@@ -74,6 +77,7 @@ export default function AssignBoat() {
     data.forEach((o,i)=>o.id=i+1);
     return data;
   }
+
   const delAssign = async (rowBoatId) => {
     axios.delete(
         `${process.env.REACT_APP_BACKEND_URL}/assign/${rowBoatId}`,
@@ -84,9 +88,15 @@ export default function AssignBoat() {
             
     }).then(res => {
        setOpen(true);
+       setMsg("Successfully deleted boat");
+       navigate(location.pathname, {});  
+       window.location.reload();
     })
     .catch(function (error) {
         console.log(error);
+        setOpen(true);
+        setSeverity("error");
+        setMsg("Error deleting boat")
     });
   }
 
@@ -170,8 +180,8 @@ export default function AssignBoat() {
   return (
     <div style={{ height: 500, width: '95%',margin:'auto',marginTop:'20px' }}>
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-        {location?.state?.msg || "Successfully deleted Boat"}
+        <Alert onClose={handleClose} severity={severity} sx={{ width: '100%' }}>
+        {msg}
         </Alert>
       </Snackbar>
       <DataGrid
