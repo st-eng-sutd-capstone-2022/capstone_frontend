@@ -24,7 +24,7 @@ function EditToolbar(props) {
     // Keep the focus in the cell
     event.preventDefault();
     console.log("mousedown")
-    navigate('/assign/boat/add');
+    navigate('/assign/location/add');
   };
 
   return (
@@ -75,18 +75,20 @@ export default function AssignLocation() {
       })
     data.forEach((o,i)=>o.id=i+1);
     data.forEach((o,i)=>o.zoneLength = o.zones.length)
+    console.log(data);
     return data;
   }
 
-  const delAssign = async (rowBoatId) => {
+  const delAssign = async (rowLocation) => {
+    console.log(rowLocation);
     axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/assign/${rowBoatId}`,
-        {
-        headers: {
-            'Authorization': `Bearer ${auth.token}`
-        },
-            
-    }).then(res => {
+        `${process.env.REACT_APP_BACKEND_URL}/location`,{
+          headers: 
+          {'Authorization': `Bearer ${auth.token}`},
+          data:
+          {location:rowLocation}
+        }
+    ).then(res => {
        setOpen(true);
        setMsg("Successfully deleted boat");
        navigate(location.pathname, {});  
@@ -116,12 +118,6 @@ export default function AssignLocation() {
     { field: 'lat', headerName: 'Lat', width: 100},
     { field: 'long', headerName: 'Lng', width: 100},
     { field: 'zoneLength', headerName: 'Zones', width: 60},
-
-    // {
-    //   field: 'assignee',
-    //   headerName: 'Assigner',
-    //   width: 80,
-    // },
     {
       field: 'delete',
       headerName: 'Delete',
@@ -154,18 +150,13 @@ export default function AssignLocation() {
   const rows = data
  
   const handleOnClick= (rowParams)=>{
-    const rowBoatObjectId = rowParams.getValue(rowParams.id,'_id');
-    const rowBoatId = rowParams.getValue(rowParams.id,'boatId');
-    const rowSerial = rowParams.getValue(rowParams.id,'serialNumber');
-    const rowLocation = rowParams.getValue(rowParams.id,'location');
-    console.log(rowLocation);
-    navigate('/assign/boat/'+rowBoatObjectId,{
-      state: {
-        _id: rowBoatObjectId,
-        boatId: rowBoatId,
-        serialNumber: rowSerial,
-        location: rowLocation
-      }
+    const rowLocationId = rowParams.getValue(rowParams.id,'_id');
+    console.log(rowLocationId);
+    const rowLocationData = data.find((obj) =>  obj._id==rowLocationId);
+    console.log(rowLocationData);
+    navigate('/assign/location/'+rowLocationId,{
+      state: rowLocationData
+  
     });
   }
 

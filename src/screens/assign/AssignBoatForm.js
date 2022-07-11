@@ -28,8 +28,6 @@ const AssignBoatForm = (props) => {
     const navigate = useNavigate();
     const statelocation = useLocation();
 
-    console.log(useParams());
-
     const [location, setLocation] = useState('');
     const [serial,setSerial] = useState('');
     const [date,setDate] = useState(new Date().toLocaleDateString());
@@ -67,7 +65,7 @@ const AssignBoatForm = (props) => {
         
     }
 
-    const patchAssign = async () => {
+    const putAssign = async () => {
         axios.put(
             `${process.env.REACT_APP_BACKEND_URL}/assign/${statelocation.state._id}`,
             {
@@ -102,7 +100,7 @@ const AssignBoatForm = (props) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         if(statelocation.pathname !== '/assign/boat/add'){
-            patchAssign();
+            putAssign();
         }
         else{
             postAssign();
@@ -111,7 +109,7 @@ const AssignBoatForm = (props) => {
 
     const handleLocationChange = (event) => {
         setLocation(event.target.value);
-      };
+    };
 
     const handleBoatIdChange = (event) => {
         setBoatId(event.target.value);
