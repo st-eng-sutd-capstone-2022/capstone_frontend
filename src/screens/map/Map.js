@@ -59,6 +59,10 @@ const Map = () => {
                   }
             }
         )
+        data = data.filter(item => {
+            return '_id' in item;
+        })
+        console.log(data);
         return data
     }
 
@@ -215,13 +219,13 @@ const Map = () => {
              
                 {liveData.map((boat,index)=>{
                     return <Markers
-                        key = {boat.boatID}
-                        boatId = {boat.boatID}
+                        key = {boat.boatId}
+                        boatId = {boat.boatId}
                         status={boat.status}
                         weight = {boat.weight.kg}
-                        battery = {boat.battery}
-                        lat={boat.lat}
-                        lng={boat.lng}
+                        battery = {boat.batteryLevel}
+                        lat={boat.latitude}
+                        lng={boat.longtitude}
                     />
                 })}
                
