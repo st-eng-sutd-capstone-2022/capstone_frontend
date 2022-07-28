@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect,useContext} from "react";
 import { Drawer,Box,Typography,IconButton, Icon, Toolbar, TextField } from "@mui/material";
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,16 +9,76 @@ import Button from '@mui/material/Button';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { useQuery } from "react-query";
+import axios from "axios";
 
+import {AuthContext} from '../../common/context/auth-context';
 import Activity from "./Activity";
 
 export const ActivityWrapperWithDrawer = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [log, setLog] = useState(false);
   const [location, setLocation] = useState('');
   const [type,setType] = useState('overall');
   const [zone,setZone] = useState('all');
   const [boatId,setBoatId] = useState('');
-  const [date, setDate] = React.useState(new Date());
+
+  var today = new Date();
+  var priorDate = new Date(new Date().setDate(today.getDate() - 30));
+
+  priorDate.setUTCHours(0,0,0,0);
+  const [startDate, setStartDate] = useState(priorDate.toISOString());
+  const [endDate,setEndDate] = useState(new Date(new Date().setUTCHours(23,59,59,999)).toISOString());
+
+  const auth = useContext(AuthContext);
+
+  const getLocations = async () => {
+
+    let {data} = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/location`,{
+          headers: {
+            'Authorization': `Bearer ${auth.token}`
+          }
+      })
+    return data;
+  }
+
+  const {isLoading:locationLoading, data: locationData } = useQuery('locations',getLocations);
+  
+
+  useEffect(() => {
+    if (!locationLoading) {
+      setLocation(locationData[0].location);
+    }
+  }, [locationData]);
+
+  const getSearch = async () => {
+
+    let {data} = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/search?type=${type}&locationId=${location}&log=${log}&endTime=${endDate}&startTime=${startDate}&zoneId=${zone}&boatId=${boatId}`,{
+          headers: {
+            'Authorization': `Bearer ${auth.token}`
+          }
+      })
+    
+    return data;
+  }
+
+  const {isLoading, error, data, refetch} = useQuery(['search',log], getSearch);
+
+  const getAssign = async () => {
+
+    let {data} = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/assign`,{
+          headers: {
+            'Authorization': `Bearer ${auth.token}`
+          }
+      })
+    
+    return data;
+  }
+
+  const {isLoading:assignLoading, data:assignData} = useQuery(`assign`, getAssign);
 
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
@@ -28,8 +88,12 @@ export const ActivityWrapperWithDrawer = () => {
     setType(event.target.value);
   }
 
-  const handleDateChange = (newValue) => {
-    setDate(newValue);
+  const handleStartDateChange = (newValue) => {
+    setStartDate(new Date(newValue).toISOString());
+  };
+
+  const handleEndDateChange = (newValue) => {
+    setEndDate(new Date(newValue).toISOString());
   };
 
   const handleZoneChange = (event) => {
@@ -42,21 +106,31 @@ export const ActivityWrapperWithDrawer = () => {
 
   const handleSubmit = (event) => {
       event.preventDefault();
-      const data = new FormData(event.currentTarget);
-      console.log(date);
+      refetch();
   };
+
+  const handleChange = (prop) => {
+    console.log("prop"+prop);
+    if (prop === 1){
+      setLog(true);
+      setType('overall');
+    } else {
+      setLog(false);
+    }
+  }
+
   return(
     <>
       <Toolbar>
         <Typography variant="h6" type="title" color="inherit" style={{ flex: 1 }}>
-          Boat Data
+          Boat Data: {location}
         </Typography>
         <IconButton size="large" edge="end" color="inherit" aria-label="logo" onClick={()=>setIsDrawerOpen(true)}>
           <FilterListIcon />
         </IconButton>
       </Toolbar>
 
-      <Activity/>
+      <Activity isLoading={isLoading} data={data} onChange={handleChange} type={type}/>
       
       <Drawer anchor="right" open={isDrawerOpen} onClose={()=>setIsDrawerOpen(false)}>
         <Box p={2} width="240px" textAlign="center" role="presentation">
@@ -74,11 +148,14 @@ export const ActivityWrapperWithDrawer = () => {
                       label="location"
                       onChange={handleLocationChange}
                   >
-                      <MenuItem value={"Seletar"}>Seletar</MenuItem>
-                      <MenuItem value={"Bedok"}>Bedok</MenuItem>
+                      {!locationLoading && locationData.map((d, index) => {
+                          const loc = d.location;
+                          return <MenuItem key={index} value={loc}>{d.location}</MenuItem>
+                      })}
                     
                   </Select>
               </FormControl>
+              {log===false &&
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="typeLabel">Type</InputLabel>
                     <Select
@@ -94,7 +171,8 @@ export const ActivityWrapperWithDrawer = () => {
                       
                     </Select>
               </FormControl>
-              {type === 'zone'&&
+              }
+              {log===false && type === 'zone'&&
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="zoneLabel">Zone</InputLabel>
                     <Select
@@ -103,15 +181,18 @@ export const ActivityWrapperWithDrawer = () => {
                         value={zone}
                         label="type"
                         onChange={handleZoneChange}
-                    >
-                        <MenuItem value={"all"}>All</MenuItem>
-                        <MenuItem value={"1"}>Zone 1</MenuItem>
-                        <MenuItem value={"2"}>Zone 2</MenuItem>
+                    > 
+                      <MenuItem value={"all"}>All</MenuItem>
+                    {!locationLoading && locationData.filter(loc=>
+                      loc.location.includes(location))[0].zones.map(zone=>{
+                        return <MenuItem key={zone.name} value={zone.name}>Zone {zone.name}</MenuItem>
+                      })}
+                        
                       
                     </Select>
               </FormControl>
               }
-              {type === 'boatId'&&
+              {log===false && type === 'boatId' &&
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="idLabel">Search Boat ID</InputLabel>
                     <Select
@@ -121,9 +202,9 @@ export const ActivityWrapperWithDrawer = () => {
                         label="boatId"
                         onChange={handleBoatIdChange}
                     >
-                        <MenuItem value={"Alexa"}>Alexa</MenuItem>
-                        <MenuItem value={"Ally"}>Ally</MenuItem>
-                        <MenuItem value={"Betty"}>Betty</MenuItem>
+                        {!assignLoading && assignData.map((boat,idx)=>{
+                          return <MenuItem key={boat.boatId} value={boat.boatId}>{boat.boatId}</MenuItem>
+                        })}
                       
                     </Select>
               </FormControl>
@@ -134,15 +215,15 @@ export const ActivityWrapperWithDrawer = () => {
            
                   label="Start Date"
                   inputFormat="dd/MM/yyyy"
-                  value={date}
-                  onChange={handleDateChange}
+                  value={startDate}
+                  onChange={handleStartDateChange}
                   renderInput={(params) => <TextField {...params} fullWidth sx={{mt:2}} />}
                 />
                 <MobileDatePicker
                   label="End Date"
                   inputFormat="dd/MM/yyyy"
-                  value={date}
-                  onChange={handleDateChange}
+                  value={endDate}
+                  onChange={handleEndDateChange}
                   renderInput={(params) => <TextField {...params} fullWidth sx={{mt:2}}/>}
                 />
               </LocalizationProvider>

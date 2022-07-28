@@ -15,35 +15,18 @@ import {
 import '../activity.css';
 
 const LogCard = ({ data }) => {
-    // const [logData, setLogData] = useState({});
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const params = {
-    //             log: true,
-    //             locationId: 1,
-    //             startTime: "2022-04-21 23:59:00.000",
-    //             endTime: "2022-05-21 23:59:00.000"
-    //         }
-
-    //         const result = await fetch(`/api/search`, params);
-    //         const body = await result.json();
-    //         setLogData(body);
-    //     };
-    //     fetchData();
-    // }, []);
 
     const getDataRows = (data) => {
         const rows = [];
 
-        for(let i=0; i<data.daterange.length; i++) {
-            for (let j=0; j<data.daterange[i].time.length; j++) {
+        for(let i=0; i<data.dateRange.length; i++) {
+            for (let j=0; j<data.dateRange[i].time.length; j++) {
                 rows.push(
-                    <TableRow key={j}>
-                        <TableCell>{j===0 ? data.daterange[i].date : ""}</TableCell>
-                        <TableCell>{j===0 ? data.daterange[i].activeHours : ""}</TableCell>
-                        <TableCell>{data.daterange[i].time[j]}</TableCell>
-                        <TableCell>{data.daterange[i].weight[j]}</TableCell>
+                    <TableRow key={Math.random()}>
+                        <TableCell>{j===0 ? data.dateRange[i].date : ""}</TableCell>
+                        <TableCell>{j===0 ? data.dateRange[i].activeHours : ""}</TableCell>
+                        <TableCell>{data.dateRange[i].time[j]}</TableCell>
+                        <TableCell>{data.dateRange[i].weight[j]}</TableCell>
                     </TableRow>
                 );
             }
@@ -54,9 +37,9 @@ const LogCard = ({ data }) => {
 
     const getTotalWeight = (data) => {
         let total = 0;
-        for(let i=0; i<data.daterange.length; i++) {
-            for (let j=0; j<data.daterange[i].weight.length; j++) {
-                total += data.daterange[i].weight[j];
+        for(let i=0; i<data.dateRange.length; i++) {
+            for (let j=0; j<data.dateRange[i].weight.length; j++) {
+                total += data.dateRange[i].weight[j];
             }
         }
 
@@ -68,10 +51,10 @@ const LogCard = ({ data }) => {
     return(
         <Card variant="outlined">
             <Grid container direction="row">
-                <Grid className="logCard" container item xs={3} sm={2} direction="column" justfyContent="flex-start" alignItems="flex-start" spacing={2}>
+                <Grid className="logCard" container item xs={3} sm={2} direction="column" alignItems="flex-start" spacing={2}>
                     <Grid item >
                         <Typography variant="subtitle2"> Boat ID </Typography>
-                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data && data.boatID ? data.boatID : 'Loading...'} </Typography>
+                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data && data.boatId ? data.boatId : 'Loading...'} </Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle2"> Location </Typography>
