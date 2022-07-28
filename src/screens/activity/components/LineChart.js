@@ -29,6 +29,9 @@ ChartJS.register(
 
 const LineChart = (props) => {
 
+    console.log("linechart labels "+props.networkData.labels);
+    console.log("linechart ds" +props.networkData.datasets);
+
     const options = {
         plugins: {
             legend: {
@@ -46,18 +49,28 @@ const LineChart = (props) => {
         }
     };
     const labels = props.networkData.labels;
+    let data;
+    if (props.multi === true) {
+        data = {
+            labels,
+            datasets: props.networkData.datasets
+        };
+    } else {
+        data = {
+            labels,
+            datasets:[
+                {
+                    data: props.networkData.datasets,
+                    borderColor: 'rgb(24,118,209)',
+                    backgroundColor:'rgb(24,118,209, 0.5)',
+                    lineTension:0.5,
+                }
+            ]
+        };
+    }
 
-    const data = {
-        labels,
-        datasets:[
-            {
-                data: props.networkData.datasets,
-                borderColor: 'rgb(24,118,209)',
-                backgroundColor:'rgb(24,118,209, 0.5)',
-                lineTension:0.5,
-            }
-        ]
-    };
+    
+    
 
     
     return(

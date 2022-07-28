@@ -74,7 +74,7 @@ export default function AssignBoat() {
           }
       })
     
-    data.forEach((o,i)=>o.id=i+1);
+    //data.forEach((o,i)=>o.id=o._id);
     return data;
   }
 
@@ -111,7 +111,7 @@ export default function AssignBoat() {
   }
 
   const columns = [
-    {field:'_id',headerName:'ID',width:0,hide:true},
+    { field:'_id',headerName:'ID',width:0,hide:true},
     { field: 'boatId', headerName: 'Boat ID', width: 60 },
     { field: 'location', headerName: 'Location', width: 140},
     {
@@ -187,6 +187,7 @@ export default function AssignBoat() {
       <DataGrid
         sx={{cursor: 'pointer'}}
         rows={rows}
+        getRowId={(row) => row._id}
         columns={columns}
         onRowClick={(params, event, details) => {
           if (!event.ignore) {

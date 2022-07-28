@@ -42,25 +42,14 @@ const BarChartStacked = (props) => {
 
     const labels = props.networkData.labels;
 
+    let displayData = props.networkData.datasets;
+    displayData = displayData.map(obj => ({ ...obj, backgroundColor: '#85D191' }));
+    displayData[1].backgroundColor = "#D98C8C";
+    displayData[2].backgroundColor = "#EDEF7C";
+
     const data = {
       labels,
-      datasets:[
-          {
-              label: props.networkData.datasets[0].label,
-              data: [4,6,6,5,6,6,5,6,7,8],
-              backgroundColor:'rgba(185, 20, 20, 1)',
-          },
-          {
-              label: props.networkData.datasets[1].label,
-              data: [2,1,1,2,1,1,2,2,1,0],
-              backgroundColor:'rgba(237, 239, 124, 1)',
-          },
-          {
-              label: props.networkData.datasets[2].label,
-              data: [2,1,1,1,1,1,1,1,1,1],
-              backgroundColor:'rgba(133, 209, 145, 1)',
-          }
-      ]
+      datasets:displayData
   };
 
     return(
