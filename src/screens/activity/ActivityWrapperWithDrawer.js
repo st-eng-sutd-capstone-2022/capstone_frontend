@@ -155,7 +155,7 @@ export const ActivityWrapperWithDrawer = () => {
                     
                   </Select>
               </FormControl>
-              {log===false &&
+              
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="typeLabel">Type</InputLabel>
                     <Select
@@ -166,12 +166,14 @@ export const ActivityWrapperWithDrawer = () => {
                         onChange={handleTypeChange}
                     >
                         <MenuItem value={"overall"}>Overall</MenuItem>
+                        {log===false &&
                         <MenuItem value={"zone"}>Zone</MenuItem>
+                        }
                         <MenuItem value={"boatId"}>Boat Id</MenuItem>
                       
                     </Select>
               </FormControl>
-              }
+              
               {log===false && type === 'zone'&&
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="zoneLabel">Zone</InputLabel>
@@ -192,7 +194,7 @@ export const ActivityWrapperWithDrawer = () => {
                     </Select>
               </FormControl>
               }
-              {log===false && type === 'boatId' &&
+              {type === 'boatId' &&
               <FormControl fullWidth sx={{mt:2}}>
                 <InputLabel id="idLabel">Search Boat ID</InputLabel>
                     <Select

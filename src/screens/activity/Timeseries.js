@@ -95,8 +95,8 @@ const Timeseries = ({data,type}) => {
                         <Grid item xs={12} sm={6} md={4}>
                             <LineChart
                                 networkData={data.weightDayData}
-                                title="Total Active Hours per Day"
-                                subtitle={`Total active hours from ${data.weightDayData.labels[0]} to ${data.weightDayData.labels[data.weightDayData.labels.length-1]}`}
+                                title="Total Weight Collected per Day"
+                                subtitle={`Total Weight Collected/day from ${data.weightDayData.labels[0]} to ${data.weightDayData.labels[data.weightDayData.labels.length-1]}`}
                             />
                         </Grid>
                         
