@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import moment from "moment";
 import {
     Card,
     Grid,
@@ -14,19 +15,29 @@ import {
 
 import '../activity.css';
 
-const LogCard = ({ data }) => {
+const LogCard = ({ data, colorStyle }) => {
+
+    const numToTime = (num) => { 
+        var hours = Math.floor(num);  
+        var minutes = Math.floor((num - hours) * 60);
+        if (minutes + ''.length < 2) {
+            minutes = '0' + minutes; 
+        }
+        return `${hours}hr ${minutes}min`;
+    }
 
     const getDataRows = (data) => {
         const rows = [];
 
         for(let i=0; i<data.dateRange.length; i++) {
+            const backgroundColor = i % 2 === 0 ? colorStyle.evenRow : colorStyle.oddRow;
             for (let j=0; j<data.dateRange[i].time.length; j++) {
                 rows.push(
-                    <TableRow key={Math.random()}>
-                        <TableCell>{j===0 ? data.dateRange[i].date : ""}</TableCell>
-                        <TableCell>{j===0 ? data.dateRange[i].activeHours : ""}</TableCell>
+                    <TableRow key={Math.random()} style={{ backgroundColor: backgroundColor }}>
+                        <TableCell>{j===0 ? moment(data.dateRange[i].date, "MM-DD-YYYY").format("DD-MM-YYYY") : ""}</TableCell>
+                        <TableCell>{j===0 ? numToTime(data.dateRange[i].activeHours) : ""}</TableCell>
                         <TableCell>{data.dateRange[i].time[j]}</TableCell>
-                        <TableCell>{data.dateRange[i].weight[j]}</TableCell>
+                        <TableCell>{data.dateRange[i].weight[j].toFixed(2)}</TableCell>
                     </TableRow>
                 );
             }
@@ -62,7 +73,7 @@ const LogCard = ({ data }) => {
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle2"> Total Weight </Typography>
-                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data ? getTotalWeight(data) : 0} kg </Typography>
+                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data ? getTotalWeight(data).toFixed(2) : 0} kg </Typography>
                     </Grid>
                 </Grid>
                 <Divider orientation="vertical" flexItem style={{marginRight:"-1px"}} />
@@ -70,11 +81,11 @@ const LogCard = ({ data }) => {
                     <TableContainer>
                         <Table size="small" aria-label="a dense table">
                             <TableHead>
-                                <TableRow>
+                                <TableRow style={{ backgroundColor: colorStyle.header }}>
                                     <TableCell>Date</TableCell>
                                     <TableCell>Activeness</TableCell>
-                                    <TableCell>Time</TableCell>
-                                    <TableCell>Weight</TableCell>
+                                    <TableCell>Unload Time</TableCell>
+                                    <TableCell>Load Weight (kg)</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>

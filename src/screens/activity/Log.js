@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -69,14 +69,28 @@ const Log = ({data}) => {
     //     }
     // ]
 
-
+    useEffect(() => {
+        console.log(data);
+    }, [data]);
     
+    const alternateColorStyle = {
+        0: {
+            header: '#BDD6EB',
+            evenRow: '#DDEBF5',
+            oddRow: '#F8FBF9'
+        },
+        1: {
+            header: '#FFB7C5',
+            evenRow: '#FFE3EB',
+            oddRow: '#FFF1F2'
+        },
+    }
 
     return(
         <Grid container>
             <Grid item xs={12}>
                 {data && data.length > 0 ? data.map((row,idx) => {
-                    return <LogCard key={idx} data={row} />
+                    return <LogCard key={idx} data={row} colorStyle={alternateColorStyle[idx % 2]} />
                 }) : "No entries found..."}
             </Grid>
         </Grid>

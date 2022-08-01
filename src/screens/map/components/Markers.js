@@ -49,20 +49,21 @@ const LargeRectangleMarker = ( {
                 }}
                 className="has-shadow"
             >
+
                 <Typography
-                    style={{ color: "#48466D", fontWeight: 300, fontSize: 15 }}
+                    style={{ color: "#48466D", fontWeight: 600, fontSize: 15,  }}
                 >
-                    ID: {id}
+                    Boat ID: {id}
                 </Typography>
                 <Typography
                     style={{ color: "#48466D", fontWeight: 300, fontSize: 15 }}
                 >
-                    Battery: {battery} %
+                    Battery Remain: {battery.toFixed(2)}%
                 </Typography>
                 <Typography
                     style={{ color: "#48466D", fontWeight: 300, fontSize: 15 }}
                 >
-                   Storage Weight: {weight} kg
+                   Latest Unload Weight: {weight.toFixed(2)}kg
                 </Typography>
                 
             </div>
