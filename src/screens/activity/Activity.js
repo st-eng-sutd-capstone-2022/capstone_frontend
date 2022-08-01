@@ -7,7 +7,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Timeseries from "./Timeseries";
 import Log from "./Log";
 
-const Activity = ({isLoading,data,onChange,type}) => {
+const Activity = ({isFetching, isLoading,data,onChange,type}) => {
  
     const [tab, setTab] = useState(0);
     
@@ -19,7 +19,7 @@ const Activity = ({isLoading,data,onChange,type}) => {
         
     };
     
-    if (isLoading) {
+    if (isFetching || isLoading) {
         return (
           <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
             <CircularProgress />
@@ -39,7 +39,7 @@ const Activity = ({isLoading,data,onChange,type}) => {
                 
             </Box>
             {tab === 0? 
-            <Timeseries data={data} type={type}/>
+            <Timeseries data={data} type={type} isLoading={isLoading} isFetching={isFetching}/>
             :
             <Log data={data}/>
             }

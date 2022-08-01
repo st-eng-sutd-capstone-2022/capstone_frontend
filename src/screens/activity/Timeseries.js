@@ -1,53 +1,61 @@
 import React from "react";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-
 import LineChart from "./components/LineChart";
 import BarChart from "./components/BarChart";
 import BarChartStacked from "./components/BarChartStacked";
+import CircularProgress from '@mui/material/CircularProgress';
 
-const Timeseries = ({data,type}) => {
+const Timeseries = ({data,type,isLoading,isFetching}) => {
 
     // const activeHoursData = {
     //     labels:['01-05-2022', '02-05-2022', '03-05-2022', '04-05-2022', '05-05-2022', '06-05-2022', '07-05-2022','08-05-2022','09-05-2022','10-05-2022'],
     //     datasets: [1,2,5,2,6,7,2,5,2,8]      
     // }
-
-    const activeHoursData = {
-        "labels":["01-05-2022", "02-05-2022", "03-05-2022", "04-05-2022", "05-05-2022", "06-05-2022", "07-05-2022","08-05-2022","09-05-2022","10-05-2022"],
-        "datasets": [
-                           {
-                   "label": "ActiveHours",
-                   "data": [1,2,5,2,6,7,2,5,2,8]
-               },
-                           {
-                                   "label": "BatteryUsed",
-                   "data": [50.3,63.3,70,62.8,71,61,68.2,53,80]
-                           }
-                       ]
-   
-   }
-   const localData = 
-    {
-        "weightZoneData":{
-        "labels":[1,2,3,4,5,6],
-        "datasets":[50,60,40,50,45,40]
-        },
-        "zone1":{
-        "labels":["01-05-2022", "02-05-2022", "03-05-2022"],
-        "datasets":[40,50,60]
-        },
-        "zone2":{
-        "labels":["01-05-2022", "02-05-2022", "03-05-2022"],
-        "datasets":[40,50,60]
-        }
+    if (isLoading || isFetching) {
+        return (
+          <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
+            <CircularProgress />
+          </Box>
+        );
     }
 
-    let localDataArr = Object.keys(localData).map(key => {
-        return localData[key];
+//     const activeHoursData = {
+//         "labels":["01-05-2022", "02-05-2022", "03-05-2022", "04-05-2022", "05-05-2022", "06-05-2022", "07-05-2022","08-05-2022","09-05-2022","10-05-2022"],
+//         "datasets": [
+//                            {
+//                    "label": "ActiveHours",
+//                    "data": [1,2,5,2,6,7,2,5,2,8]
+//                },
+//                            {
+//                                    "label": "BatteryUsed",
+//                    "data": [50.3,63.3,70,62.8,71,61,68.2,53,80]
+//                            }
+//                        ]
+   
+//    }
+//    const localData = 
+//     {
+//         "weightZoneData":{
+//         "labels":[1,2,3,4,5,6],
+//         "datasets":[50,60,40,50,45,40]
+//         },
+//         "zone1":{
+//         "labels":["01-05-2022", "02-05-2022", "03-05-2022"],
+//         "datasets":[40,50,60]
+//         },
+//         "zone2":{
+//         "labels":["01-05-2022", "02-05-2022", "03-05-2022"],
+//         "datasets":[40,50,60]
+//         }
+//     }
+
+    let localDataArr = Object.keys(data).map(key => {
+        return {k:key, v:data[key]};
     })
 
-    let zoneArr = localDataArr.slice(1);
+    let zoneArr = localDataArr.slice(0,-1);
+    console.log(zoneArr);
 
     return (
         <React.Fragment>
@@ -57,7 +65,7 @@ const Timeseries = ({data,type}) => {
                     <React.Fragment>
                         <Grid item xs={12} sm={6} md={4}>
                             <BarChart
-                                networkData={localData.weightZoneData}
+                                networkData={data.weightZoneData}
                                 title="Total weight collected per Zone"
                                 subtitle={''}
                             />
@@ -67,8 +75,8 @@ const Timeseries = ({data,type}) => {
                             return(
                         <Grid key={idx} item xs={12} sm={6} md={4}>
                             <LineChart
-                                networkData={zone}
-                                title=""
+                                networkData={zone.v}
+                                title={`Zone ${zone.k} | Weight collected per Day`}
                                 subtitle={``}
                             />
                         </Grid>)

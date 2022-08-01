@@ -64,7 +64,7 @@ export const ActivityWrapperWithDrawer = () => {
     return data;
   }
 
-  const {isLoading, error, data, refetch} = useQuery(['search',log], getSearch);
+  const {isFetching, isLoading, error, data, refetch} = useQuery(['search',log], getSearch);
 
   const getAssign = async () => {
 
@@ -130,7 +130,7 @@ export const ActivityWrapperWithDrawer = () => {
         </IconButton>
       </Toolbar>
 
-      <Activity isLoading={isLoading} data={data} onChange={handleChange} type={type}/>
+      <Activity isFetching={isFetching} isLoading={isLoading} data={data} onChange={handleChange} type={type}/>
       
       <Drawer anchor="right" open={isDrawerOpen} onClose={()=>setIsDrawerOpen(false)}>
         <Box p={2} width="240px" textAlign="center" role="presentation">
