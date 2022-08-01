@@ -18,16 +18,6 @@ import {AuthContext} from '../../common/context/auth-context';
 import ListView from "./ListView";
 import { Typography } from "@mui/material";
 
-const boatObj = {
-    id : "100100",
-    status: "active",
-    battery: "100",
-    weight:"10",
-    lat:1.404701,
-    lng:103.838530,
-}
-
-
 const calculateCentroid = (lats,longs) => {
     const lat = lats.reduce((a, b) => a + b, 0)/lats.length;
     const long = longs.reduce((a, b) => a + b, 0)/longs.length;
@@ -59,11 +49,18 @@ const Map = () => {
                   }
             }
         )
+        data = data.filter(item => {
+            return '_id' in item;
+        })
+        console.log(data);
         return data
     }
 
     const {isLoading, error, data} = useQuery('locations', getLocations);
-    const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat);
+    const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat,{
+        // Refetch the data every second
+        refetchInterval: 3,
+      });
 
     
     if(isLoading || liveLoading){
@@ -215,13 +212,13 @@ const Map = () => {
              
                 {liveData.map((boat,index)=>{
                     return <Markers
-                        key = {boat.boatID}
-                        boatId = {boat.boatID}
+                        key = {boat.boatId}
+                        boatId = {boat.boatId}
                         status={boat.status}
                         weight = {boat.weight.kg}
-                        battery = {boat.battery}
-                        lat={boat.lat}
-                        lng={boat.lng}
+                        battery = {boat.batteryLevel}
+                        lat={boat.latitude}
+                        lng={boat.longtitude}
                     />
                 })}
                

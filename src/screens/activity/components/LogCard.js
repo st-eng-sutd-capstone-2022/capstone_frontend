@@ -48,9 +48,9 @@ const LogCard = ({ data, colorStyle }) => {
 
     const getTotalWeight = (data) => {
         let total = 0;
-        for(let i=0; i<data.daterange.length; i++) {
-            for (let j=0; j<data.daterange[i].weight.length; j++) {
-                total += data.daterange[i].weight[j];
+        for(let i=0; i<data.dateRange.length; i++) {
+            for (let j=0; j<data.dateRange[i].weight.length; j++) {
+                total += data.dateRange[i].weight[j];
             }
         }
 
@@ -62,10 +62,10 @@ const LogCard = ({ data, colorStyle }) => {
     return(
         <Card variant="outlined">
             <Grid container direction="row">
-                <Grid className="logCard" container item xs={3} sm={2} direction="column" justfyContent="flex-start" alignItems="flex-start" spacing={2}>
+                <Grid className="logCard" container item xs={3} sm={2} direction="column" alignItems="flex-start" spacing={2}>
                     <Grid item >
                         <Typography variant="subtitle2"> Boat ID </Typography>
-                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data && data.boatID ? data.boatID : 'Loading...'} </Typography>
+                        <Typography variant="subtitle1" color="inherit" style={{ flex: 1 }}> {data && data.boatId ? data.boatId : 'Loading...'} </Typography>
                     </Grid>
                     <Grid item>
                         <Typography variant="subtitle2"> Location </Typography>

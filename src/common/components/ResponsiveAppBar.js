@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 
-import boatLogo from '../../assets/images/boat_logo.png';
+import boatLogo from '../../assets/images/hyverst_logo.png';
 import { AuthContext } from '../context/auth-context';
 
 

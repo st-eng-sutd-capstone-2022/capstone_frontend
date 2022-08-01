@@ -21,7 +21,11 @@ const ListView = () => {
         )
         return data
     }
-    const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat);
+    const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat,{
+        // Refetch the data every second
+        refetchInterval: 3,
+    });
+
     if(liveLoading){
         return(
             <Box sx={{ display: 'flex',justifyContent: 'center',marginTop:'20%'}}>
@@ -35,7 +39,8 @@ const ListView = () => {
         { field: 'status', headerName: 'Status'},
         { field: 'battery',headerName: 'Battery'},
         { field: 'weight',headerName: 'Last Load'},
-        { field: 'estimatedWeight',headerName: 'Estimated Weight', width: 150},
+        //{ field: 'estimatedWeight',headerName: 'Estimated Weight', width: 150},
+        { field: 'location',headerName:'Location'},
         { field: 'zone',headerName: 'Zone'},
     ];
 
@@ -43,11 +48,12 @@ const ListView = () => {
     liveData.map((boat,index)=>{
         const row = {
             id: index,
-            boatId: boat.boatID,
+            boatId: boat.boatId,
             status: boat.status,
-            battery: boat.battery,
+            battery: boat.batteryLevel,
             weight: boat.weight.kg,
             estimatedWeight: boat.estimatedWeight,
+            location:boat.location,
             zone: boat.zone,
         }
         rows.push(row)

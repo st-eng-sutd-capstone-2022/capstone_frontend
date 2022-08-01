@@ -46,18 +46,31 @@ const LineChart = (props) => {
         }
     };
     const labels = props.networkData.labels;
+    let data;
+    if (props.multi === true) {
+        let ds = props.networkData.datasets;
+        ds[0].borderColor = '#85D191';
+        ds[1].borderColor = '#D98C8C';
+        data = {
+            labels,
+            datasets: ds
+        };
+    } else {
+        data = {
+            labels,
+            datasets:[
+                {
+                    data: props.networkData.datasets,
+                    borderColor: 'rgb(24,118,209)',
+                    backgroundColor:'rgb(24,118,209, 0.5)',
+                    lineTension:0.5,
+                }
+            ]
+        };
+    }
 
-    const data = {
-        labels,
-        datasets:[
-            {
-                data: props.networkData.datasets,
-                borderColor: 'rgb(24,118,209)',
-                backgroundColor:'rgb(24,118,209, 0.5)',
-                lineTension:0.5,
-            }
-        ]
-    };
+    
+    
 
     
     return(

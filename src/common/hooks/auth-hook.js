@@ -10,7 +10,7 @@ export const useAuth = () => {
   const login = useCallback((token,type,expirationDate)=>{
     setToken(token);
     setType(type);
-    const tokenExpirationDate = expirationDate||new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 365);
+    const tokenExpirationDate = expirationDate||new Date(new Date().getTime() + 1000 * 60 * 60 * 24);
     setTokenExpirationTime(tokenExpirationDate);
     localStorage.setItem("userData",JSON.stringify({token:token,type:type, expiration:tokenExpirationDate.toISOString()}));
   },[]);
@@ -26,7 +26,7 @@ export const useAuth = () => {
     if(token && tokenExpirationTime){
       //this will get time in milliseconds
       const remainingTime = tokenExpirationTime.getTime() - new Date().getTime();
-      logoutTimer =setTimeout(logout, remainingTime);
+      logoutTimer = setTimeout(logout, remainingTime);
     } else{
       clearTimeout(logoutTimer);
     }
