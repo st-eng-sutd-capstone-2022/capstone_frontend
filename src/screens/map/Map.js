@@ -87,6 +87,8 @@ const Map = () => {
     console.log(centroids);
 
     const handleChange = (event) => {
+        //console.log("loc: "+event.target.dataset);
+        //console.log("loc: "+ event.currentTarget.getAttribute("data-loc"));
         setLocation(event.target.value);
     };
 

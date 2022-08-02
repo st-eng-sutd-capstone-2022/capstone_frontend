@@ -11,6 +11,9 @@ import { useNavigate } from 'react-router-dom';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 import { useLocation } from 'react-router-dom';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import {AuthContext} from '../../common/context/auth-context';
 
@@ -54,7 +57,9 @@ const Profile = (props) => {
             <Card sx={{ maxWidth: 345,margin:"0 auto" }}>
                 <CardActionArea onClick={()=>navigate('/profile/change-password')}>
                     <CardContent style={{textAlign:"center"}}>
+                        
                         <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}}>
+                            <LockOpenIcon sx={{mx:1}}/>
                             Change Password
                             <ChevronRightIcon style={{textAlign:"right"}}/>
                         </Typography>
@@ -81,6 +86,7 @@ const Profile = (props) => {
                 <CardActionArea onClick={()=>navigate('/profile/create-account')}>
                     <CardContent style={{textAlign:"center"}}>
                     <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}} data-cy="create">
+                        <PersonAddAltIcon sx={{mx:1}}/>
                         Create Account
                         <ChevronRightIcon style={{textAlign:"right"}}/>
                     </Typography>
@@ -95,6 +101,7 @@ const Profile = (props) => {
                 <CardActionArea onClick={handleLogout}>
                     <CardContent style={{textAlign:"center"}}>
                     <Typography variant="h6" style={{alignItems: 'center',display:"inline-flex"}} data-cy="logout">
+                        <ExitToAppIcon sx={{mx:1}}/>
                         Log Out
                         <ChevronRightIcon style={{textAlign:"right"}}/>
                     </Typography>
