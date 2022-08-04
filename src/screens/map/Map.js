@@ -27,7 +27,8 @@ const calculateCentroid = (lats,longs) => {
 const Map = () => {
     const auth = React.useContext(AuthContext);
 
-    const [location, setLocation] = useState({location:"Seletar",lat:1.4123541,lng:103.8416441});
+    const [location, setLocation] = useState("Seletar");
+    const [latLng,setLatLng] = useState({lat:1.4123541,lng:103.8416441})
     const [mapView, setMapView] = useState(true);
 
     const getLocations = async () => {
@@ -71,9 +72,9 @@ const Map = () => {
         )
     }
 
-    const locationData = data.filter(o=>o.location===location.location);
+    const locationData = data.filter(o=>o.location===location);
 
-    console.log(locationData);
+    //console.log(locationData);
 
     let centroids = [];
     for(var i =0; i < locationData.length; i++){
@@ -84,11 +85,13 @@ const Map = () => {
         }
     }
 
-    console.log(centroids);
+    //console.log(centroids);
 
     const handleChange = (event) => {
-        //console.log("loc: "+event.target.dataset);
-        //console.log("loc: "+ event.currentTarget.getAttribute("data-loc"));
+        
+        const newlocationData = data.filter(o=>o.location===event.target.value);
+        
+        setLatLng({lat:newlocationData[0].lat,lng:newlocationData[0].long});
         setLocation(event.target.value);
     };
 
@@ -149,7 +152,7 @@ const Map = () => {
                         labelId="location-label"
                         id="location-select"
                         defaultValue=""
-                        value={location.location || ""}
+                        value={location}
                         label="Location"
                         onChange={handleChange}
                         MenuProps={{
@@ -157,8 +160,8 @@ const Map = () => {
                         }}
                         >   
                             {data.map((d, index) => {
-                                const loc = {location:d.location,lat:d.lat,lng:d.long};
-                                return <MenuItem key={index} value={loc}>{d.location}</MenuItem>
+                                //const loc = {location:d.location,lat:d.lat,lng:d.long};
+                                return <MenuItem key={index} value={d.location}>{d.location}</MenuItem>
                             })}
                             
                         </Select>
@@ -198,7 +201,7 @@ const Map = () => {
                 }}
                 defaultCenter={{lat:1.4123541, lng:103.8416441}}
                 defaultZoom={15}
-                center={{lat:location.lat, lng:location.lng}}
+                center={{lat:latLng.lat, lng:latLng.lng}}
                 hoverDistance={70}
                 options={{
                     clickableIcons: false,
