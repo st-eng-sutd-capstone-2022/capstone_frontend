@@ -58,12 +58,12 @@ const LargeRectangleMarker = ( {
                 <Typography
                     style={{ color: "#48466D", fontWeight: 300, fontSize: 15 }}
                 >
-                    Battery Remain: {battery.toFixed(2)}%
+                    Battery Remain: {Math.floor(battery)}%
                 </Typography>
                 <Typography
                     style={{ color: "#48466D", fontWeight: 300, fontSize: 15 }}
                 >
-                   Latest Unload Weight: {weight.toFixed(2)}kg
+                   Latest Unload Weight: {Math.floor(weight)}kg
                 </Typography>
                 
             </div>

@@ -60,8 +60,8 @@ const Map = () => {
     const {isLoading, error, data} = useQuery('locations', getLocations);
     const {isLoading:liveLoading,error:liveError, data:liveData} = useQuery('liveboats', getLiveBoat,{
         // Refetch the data every second
-        refetchInterval: 3,
-      });
+        refetchInterval: 3000,
+    });
 
     
     if(isLoading || liveLoading){
@@ -236,7 +236,7 @@ const Map = () => {
                 })}
             
             </GoogleMapReact> : 
-            <ListView/>
+            <ListView location={location}/>
             }
         </React.Fragment>
     );
