@@ -18,7 +18,7 @@ import Activity from "./Activity";
 export const ActivityWrapperWithDrawer = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [log, setLog] = useState(false);
-  const [location, setLocation] = useState('');
+  const [location, setLocation] = useState('Seletar');
   const [type,setType] = useState('overall');
   const [zone,setZone] = useState('all');
   const [boatId,setBoatId] = useState('');
@@ -53,7 +53,6 @@ export const ActivityWrapperWithDrawer = () => {
   }, [locationData]);
 
   const getSearch = async () => {
-
     let {data} = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/search?type=${type}&locationId=${location}&log=${log}&endTime=${endDate}&startTime=${startDate}&zoneId=${zone}&boatId=${boatId}`,{
           headers: {

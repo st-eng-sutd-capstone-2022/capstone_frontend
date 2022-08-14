@@ -81,6 +81,7 @@ const LineChart = (props) => {
                         <ListItemText 
                             primary={props.title} 
                             secondary={props.subtitle}
+                            data-cy="listItemText"
                         />
                     </ListItem>
                     <Divider />

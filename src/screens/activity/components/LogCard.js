@@ -31,15 +31,20 @@ const LogCard = ({ data, colorStyle }) => {
 
         for(let i=0; i<data.dateRange.length; i++) {
             const backgroundColor = i % 2 === 0 ? colorStyle.evenRow : colorStyle.oddRow;
-            for (let j=0; j<data.dateRange[i].time.length; j++) {
-                rows.push(
-                    <TableRow key={Math.random()} style={{ backgroundColor: backgroundColor }}>
-                        <TableCell>{j===0 ? moment(data.dateRange[i].date, "MM-DD-YYYY").format("DD-MM-YYYY") : ""}</TableCell>
-                        <TableCell>{j===0 ? numToTime(data.dateRange[i].activeHours) : ""}</TableCell>
-                        <TableCell>{data.dateRange[i].time[j]}</TableCell>
-                        <TableCell>{data.dateRange[i].weight[j].toFixed(2)}</TableCell>
-                    </TableRow>
-                );
+            if(data.dateRange[i].time.length===0){
+                //console.log(data.dateRange[i])
+                continue
+            } else {
+                for (let j=0; j<data.dateRange[i].time.length; j++) {
+                    rows.push(
+                        <TableRow key={Math.random()} style={{ backgroundColor: backgroundColor }}>
+                            <TableCell>{j===0 ? moment(data.dateRange[i].date, "DD-MM-YYYY").format("DD-MM-YYYY") : ""}</TableCell>
+                            <TableCell>{j===0 ? numToTime(data.dateRange[i].activeHours) : ""}</TableCell>
+                            <TableCell>{data.dateRange[i].time[j]}</TableCell>
+                            <TableCell>{data.dateRange[i].weight[j].toFixed(2)}</TableCell>
+                        </TableRow>
+                    );
+                }
             }
         }
 
@@ -61,7 +66,9 @@ const LogCard = ({ data, colorStyle }) => {
 
     return(
         <Card variant="outlined">
+            {getTotalWeight(data)>0 &&
             <Grid container direction="row">
+                
                 <Grid className="logCard" container item xs={3} sm={2} direction="column" alignItems="flex-start" spacing={2}>
                     <Grid item >
                         <Typography variant="subtitle2"> Boat ID </Typography>
@@ -94,7 +101,9 @@ const LogCard = ({ data, colorStyle }) => {
                         </Table>
                     </TableContainer>
                 </Grid>
+                
             </Grid>
+            }
         </Card>
 
     );

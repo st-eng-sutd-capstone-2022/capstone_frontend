@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 
 import {AuthContext} from '../../common/context/auth-context';
 
-const ListView = () => {
+const ListView = ({location}) => {
 
     const auth = React.useContext(AuthContext);
 
@@ -43,15 +43,15 @@ const ListView = () => {
         { field: 'location',headerName:'Location'},
         { field: 'zone',headerName: 'Zone'},
     ];
-
+    let filteredLiveData = liveData.filter(o=>o.location===location);
     let rows = [];
-    liveData.map((boat,index)=>{
+    filteredLiveData.map((boat,index)=>{
         const row = {
             id: index,
             boatId: boat.boatId,
             status: boat.status,
-            battery: boat.batteryLevel,
-            weight: boat.weight.kg,
+            battery: Math.floor(boat.batteryLevel),
+            weight: Math.floor(boat.weight.kg),
             estimatedWeight: boat.estimatedWeight,
             location:boat.location,
             zone: boat.zone,
